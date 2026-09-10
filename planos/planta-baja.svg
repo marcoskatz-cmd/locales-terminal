@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="system-ui, sans-serif">
+  <!-- PLANO MOCK · Planta baja. Reemplazar por el plano real manteniendo un elemento con id="L-XX" por local
+       y la clase "zona". Todo lo demás (paredes, textos) es decorativo. -->
+  <defs>
+    <pattern id="rayado" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#bfdbfe"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#3b82f6" stroke-width="4"/>
+    </pattern>
+  </defs>
+
+  <!-- contorno del edificio -->
+  <rect x="20" y="20" width="960" height="580" fill="none" stroke="#334155" stroke-width="4"/>
+
+  <!-- andenes -->
+  <rect x="20" y="470" width="960" height="130" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="500" y="545" text-anchor="middle" font-size="22" fill="#64748b" letter-spacing="6">ANDENES</text>
+  <line x1="20" y1="470" x2="980" y2="470" stroke="#94a3b8" stroke-width="2" stroke-dasharray="10 6"/>
+
+  <!-- hall central -->
+  <rect x="330" y="60" width="340" height="380" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="500" y="260" text-anchor="middle" font-size="18" fill="#94a3b8" letter-spacing="4">HALL CENTRAL</text>
+  <text x="500" y="285" text-anchor="middle" font-size="12" fill="#cbd5e1">boleterías · espera</text>
+
+  <!-- accesos -->
+  <text x="500" y="45" text-anchor="middle" font-size="12" fill="#64748b">ACCESO PRINCIPAL</text>
+  <rect x="440" y="18" width="120" height="8" fill="#334155"/>
+
+  <!-- pasillos -->
+  <rect x="40" y="380" width="290" height="60" fill="#f8fafc" stroke="#e2e8f0"/>
+  <rect x="670" y="380" width="290" height="60" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="185" y="415" text-anchor="middle" font-size="12" fill="#94a3b8">ALA SUR</text>
+  <text x="815" y="415" text-anchor="middle" font-size="12" fill="#94a3b8">ALA NORTE</text>
+
+  <!-- LOCALES (zonas clickeables) -->
+  <rect id="L-01" class="zona" x="40" y="60" width="130" height="150"/>
+  <rect id="L-02" class="zona" x="180" y="60" width="140" height="150"/>
+  <rect id="L-05" class="zona" x="40" y="220" width="130" height="150"/>
+  <rect id="L-06" class="zona" x="180" y="220" width="140" height="150"/>
+
+  <rect id="L-03" class="zona" x="680" y="60" width="130" height="150"/>
+  <rect id="L-04" class="zona" x="820" y="60" width="140" height="150"/>
+
+  <!-- espacios técnicos -->
+  <rect x="680" y="220" width="280" height="150" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <text x="820" y="300" text-anchor="middle" font-size="12" fill="#64748b">SANITARIOS · SALA TÉCNICA</text>
+
+  <!-- escalera -->
+  <rect x="330" y="400" width="60" height="40" fill="none" stroke="#94a3b8"/>
+  <text x="360" y="425" text-anchor="middle" font-size="10" fill="#64748b">▲ PA</text>
+</svg>

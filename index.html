@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locales · Terminal INGECO</title>
+<meta name="theme-color" content="#0f172a">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= PIN ================= -->
+<div id="pantalla-pin" class="pantalla-pin">
+  <form id="form-pin" class="caja-pin" autocomplete="off">
+    <div class="marca-pin">Locales</div>
+    <div class="sub-pin" id="pin-edificio"></div>
+    <label for="input-pin">PIN de acceso</label>
+    <input id="input-pin" type="password" inputmode="numeric" autocomplete="off" required>
+    <button type="submit" class="btn btn-primario">Entrar</button>
+    <p id="pin-error" class="error" hidden></p>
+    <p class="nota-pin" id="pin-nota" hidden>Modo demostración · PIN <code>1234</code></p>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="marca">
+      <span class="logo">▦</span>
+      <div>
+        <div class="titulo">Locales</div>
+        <div class="subtitulo" id="nombre-edificio"></div>
+      </div>
+    </div>
+    <div class="topbar-acciones">
+      <button class="btn btn-sec" id="btn-cuotas" title="Crea las cuotas de alquiler y expensas del mes para todos los contratos vigentes">+ Cuotas del mes</button>
+      <button class="btn btn-sec" id="btn-alertas" title="Alertas">🔔 <span class="contador" id="alertas-num" hidden></span></button>
+      <button class="btn btn-sec" id="btn-ayuda" title="Cómo se usa">? Ayuda</button>
+      <button class="btn btn-fantasma" id="btn-salir" title="Cerrar sesión">Salir</button>
+    </div>
+  </header>
+
+  <div id="banner-demo" class="banner banner-demo" hidden>
+    <strong>Modo demostración.</strong> Estos datos son ficticios y los cambios se guardan solo en esta pestaña. Al recargar vuelven los datos de ejemplo.
+  </div>
+  <div id="banner-diagnostico" class="banner banner-alerta" hidden></div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <main class="layout">
+    <aside class="lateral">
+      <input id="buscador" class="buscador" type="search" placeholder="Buscar local, inquilino, rubro…">
+      <div class="chips" id="filtros"></div>
+      <ul class="lista-locales" id="lista-locales"></ul>
+    </aside>
+
+    <section class="mapa-wrap">
+      <div class="mapa-cabecera">
+        <div class="tabs" id="plantas-tabs"></div>
+        <div class="referencia">
+          <span><i class="sw sw-libre"></i>Libre</span>
+          <span><i class="sw sw-aldia"></i>Al día</span>
+          <span><i class="sw sw-deuda"></i>Con deuda</span>
+          <span><i class="sw sw-refaccion"></i>Refacción</span>
+          <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
+        </div>
+      </div>
+      <div class="mapa" id="mapa"><div class="cargando">Cargando plano…</div></div>
+    </section>
+  </main>
+
+  <!-- ================= FICHA ================= -->
+  <div id="ficha-fondo" class="ficha-fondo" hidden></div>
+  <aside id="ficha" class="ficha" hidden aria-label="Ficha del local">
+    <div class="ficha-cabecera">
+      <div>
+        <div class="ficha-id" id="ficha-id"></div>
+        <div class="ficha-titulo" id="ficha-titulo"></div>
+        <div class="ficha-sub" id="ficha-sub"></div>
+      </div>
+      <button class="btn-cerrar" id="ficha-cerrar" title="Cerrar">✕</button>
+    </div>
+    <div class="ficha-estado" id="ficha-estado"></div>
+    <div class="tabs tabs-ficha" id="ficha-tabs">
+      <button data-tab="resumen" class="activa">Resumen</button>
+      <button data-tab="contrato">Contrato</button>
+      <button data-tab="pagos">Pagos</button>
+      <button data-tab="mantenimiento">Mantenimiento</button>
+      <button data-tab="historial">Historial</button>
+    </div>
+    <div class="ficha-cuerpo" id="ficha-cuerpo"></div>
+  </aside>
+
+  <!-- ================= PANEL ALERTAS ================= -->
+  <aside id="panel-alertas" class="ficha" hidden aria-label="Alertas">
+    <div class="ficha-cabecera">
+      <div><div class="ficha-titulo">Alertas</div><div class="ficha-sub">Vencimientos, ajustes, mora y fallas urgentes</div></div>
+      <button class="btn-cerrar" id="alertas-cerrar" title="Cerrar">✕</button>
+    </div>
+    <div class="ficha-cuerpo" id="alertas-cuerpo"></div>
+  </aside>
+
+  <!-- ================= MODAL ================= -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-caja" role="dialog" aria-modal="true">
+      <div class="modal-cabecera"><div class="modal-titulo" id="modal-titulo"></div><button class="btn-cerrar" id="modal-cerrar">✕</button></div>
+      <form id="modal-form" class="formulario" autocomplete="off"></form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+</div>
+
+<script src="config.js"></script>
+<script src="backend/Reglas.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

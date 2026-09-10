@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="system-ui, sans-serif">
+  <!-- PLANO MOCK · Planta alta (entrepiso). Reemplazar por el plano real manteniendo un elemento con id="L-XX"
+       por local y la clase "zona". -->
+  <defs>
+    <pattern id="rayado" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#bfdbfe"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#3b82f6" stroke-width="4"/>
+    </pattern>
+  </defs>
+
+  <rect x="20" y="20" width="960" height="580" fill="none" stroke="#334155" stroke-width="4"/>
+
+  <!-- vacío sobre el hall -->
+  <rect x="330" y="60" width="340" height="380" fill="none" stroke="#cbd5e1" stroke-dasharray="8 6"/>
+  <text x="500" y="250" text-anchor="middle" font-size="16" fill="#94a3b8" letter-spacing="3">VACÍO SOBRE HALL</text>
+  <text x="500" y="272" text-anchor="middle" font-size="12" fill="#cbd5e1">baranda perimetral</text>
+
+  <!-- pasillo perimetral -->
+  <rect x="40" y="440" width="920" height="60" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="500" y="475" text-anchor="middle" font-size="12" fill="#94a3b8">PASILLO ENTREPISO</text>
+
+  <!-- LOCALES -->
+  <rect id="L-07" class="zona" x="40" y="60" width="130" height="170"/>
+  <rect id="L-08" class="zona" x="180" y="60" width="140" height="170"/>
+  <rect id="L-09" class="zona" x="40" y="250" width="280" height="170"/>
+  <rect id="L-10" class="zona" x="680" y="60" width="280" height="360"/>
+
+  <!-- terraza técnica -->
+  <rect x="40" y="520" width="920" height="60" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <text x="500" y="555" text-anchor="middle" font-size="12" fill="#64748b">SALA DE MÁQUINAS · TERRAZA TÉCNICA</text>
+
+  <rect x="330" y="400" width="60" height="40" fill="none" stroke="#94a3b8"/>
+  <text x="360" y="425" text-anchor="middle" font-size="10" fill="#64748b">▼ PB</text>
+</svg>

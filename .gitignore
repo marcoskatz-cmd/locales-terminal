@@ -1,0 +1,4 @@
+backend/.clasp.json
+.claude/
+__pycache__/
+*.log
