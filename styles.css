@@ -123,10 +123,16 @@ code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; }
 .referencia { margin-top: 8px; }
 .referencia-tip { color: var(--texto-3); font-size: .76rem; margin-left: auto; }
 .sw-inactivo { background: #f1f5f9; border-color: #cbd5e1; }
+.sw-judicial { background: repeating-linear-gradient(-45deg, #ede9fe 0 3px, #7e22ce 3px 5px); border-color: #7e22ce; }
+.sw-sindatos { background: #fff; border-style: dashed; border-color: #94a3b8; }
+.pill-judicial { background: #ede9fe; border-color: #7e22ce; color: #4c1d95; }
+.pill-sindatos { background: #fff; border-color: #94a3b8; color: var(--texto-2); }
 
 /* zonas del plano (el SVG hereda estas reglas al estar inline) */
 .zona { stroke-width: 1.6; vector-effect: non-scaling-stroke; fill-opacity: .82; cursor: pointer; transition: opacity .15s; fill: var(--libre); stroke: var(--libre-b); }
 .zona[data-estado="inactivo"] { fill: #f1f5f9; stroke: #cbd5e1; }
+.zona[data-estado="judicial"] { fill: url(#rayado-judicial); stroke: #7e22ce; }
+.zona[data-estado="sindatos"] { fill: #ffffff; fill-opacity: .5; stroke: #94a3b8; stroke-dasharray: 3 2; }
 .zona[data-estado="libre"] { fill: var(--libre); stroke: var(--libre-b); }
 .zona[data-estado="aldia"] { fill: var(--aldia); stroke: var(--aldia-b); }
 .zona[data-estado="deuda"] { fill: var(--deuda); stroke: var(--deuda-b); }

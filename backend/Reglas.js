@@ -10,7 +10,7 @@ var REGLAS = (function () {
   var CLAVES = { LOCALES: 'id_local', CONTRATOS: 'id_contrato', CUOTAS: 'id_cuota', PAGOS: 'id_pago', MANTENIMIENTO: 'id_mant' };
   var HOJA_A_KEY = { LOCALES: 'locales', CONTRATOS: 'contratos', CUOTAS: 'cuotas', PAGOS: 'pagos', MANTENIMIENTO: 'mantenimiento', HISTORIAL: 'historial' };
 
-  var ESTADOS_LOCAL = ['LIBRE', 'ALQUILADO', 'REFACCION'];
+  var ESTADOS_LOCAL = ['LIBRE', 'ALQUILADO', 'REFACCION', 'JUDICIAL'];
   var ESTADOS_CONTRATO = ['VIGENTE', 'FINALIZADO', 'RESCINDIDO'];
   var CONCEPTOS = ['ALQUILER', 'EXPENSAS'];
   var ESTADOS_CUOTA = ['PENDIENTE', 'PARCIAL', 'PAGADA'];
@@ -26,7 +26,14 @@ var REGLAS = (function () {
     var d = fecha || new Date();
     return hoyISO(d) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   }
-  function num(v) { var n = Number(String(v === undefined || v === null ? '' : v).replace(/\./g, '').replace(',', '.')); return isNaN(n) ? 0 : n; }
+  // Acepta números JS tal cual, y texto en formato es-AR ("1.200.000,50") o técnico ("1200000.5")
+  function num(v) {
+    if (typeof v === 'number') return isNaN(v) ? 0 : v;
+    var s = String(v === undefined || v === null ? '' : v).trim().replace(/\$/g, '').replace(/\s/g, '');
+    if (!s) return 0;
+    if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s) || /^-?\d+,\d+$/.test(s)) s = s.replace(/\./g, '').replace(',', '.');
+    var n = Number(s); return isNaN(n) ? 0 : n;
+  }
   function txt(v) { return v === undefined || v === null ? '' : String(v).trim(); }
   function enLista(v, lista, nombre) {
     if (lista.indexOf(v) < 0) throw new Error(nombre + ' inválido: "' + v + '". Opciones: ' + lista.join(', '));
@@ -71,16 +78,18 @@ var REGLAS = (function () {
   }
 
   // ---------- LOCALES ----------
-  var CAMPOS_LOCAL = ['nombre', 'planta', 'sector', 'm2', 'rubro', 'estado', 'observaciones'];
+  var CAMPOS_LOCAL = ['nombre', 'categoria', 'planta', 'sector', 'zonas', 'm2', 'rubro', 'estado', 'observaciones'];
   function guardarLocal(datos, p, ctx) {
     var actual = buscar(datos, 'LOCALES', txt(p.id_local));
     if (!actual) throw new Error('No existe el local ' + p.id_local + '.');
     var nuevo = clonar(actual);
     CAMPOS_LOCAL.forEach(function (c) { if (p[c] !== undefined) nuevo[c] = c === 'm2' ? num(p[c]) : txt(p[c]); });
     enLista(nuevo.estado, ESTADOS_LOCAL, 'Estado del local');
+    if (datos.listas && datos.listas.categorias && txt(nuevo.categoria)) enLista(nuevo.categoria, datos.listas.categorias, 'Categoría');
     var vig = contratoVigente(datos, nuevo.id_local);
     if (nuevo.estado === 'LIBRE' && vig) throw new Error('El local tiene un contrato vigente con ' + vig.inquilino + '. Finalizalo antes de marcarlo LIBRE.');
     if (nuevo.estado === 'ALQUILADO' && !vig) throw new Error('No hay contrato vigente. Cargá el contrato primero: eso pone el local en ALQUILADO solo.');
+    // JUDICIAL y REFACCION se pueden marcar con o sin contrato (un ocupante en litigio puede no tener contrato vigente)
     return { upserts: [{ hoja: 'LOCALES', fila: nuevo }], historial: diff(ctx, 'LOCALES', nuevo.id_local, actual, nuevo, CAMPOS_LOCAL), mensaje: 'Local guardado.' };
   }
 
@@ -119,8 +128,8 @@ var REGLAS = (function () {
 
     // El estado del local sigue al contrato (POKAYOKE: nadie lo marca a mano)
     var estadoLocalNuevo = null;
-    if (nuevo.estado_contrato === 'VIGENTE' && local.estado !== 'ALQUILADO') estadoLocalNuevo = 'ALQUILADO';
-    if (nuevo.estado_contrato !== 'VIGENTE' && actual && actual.estado_contrato === 'VIGENTE' && local.estado === 'ALQUILADO') estadoLocalNuevo = 'LIBRE';
+    if (nuevo.estado_contrato === 'VIGENTE' && local.estado === 'LIBRE') estadoLocalNuevo = 'ALQUILADO';          // REFACCION / JUDICIAL se respetan
+    if (nuevo.estado_contrato !== 'VIGENTE' && actual && actual.estado_contrato === 'VIGENTE' && (local.estado === 'ALQUILADO' || local.estado === 'JUDICIAL')) estadoLocalNuevo = 'LIBRE';
     if (estadoLocalNuevo) {
       var l2 = clonar(local); l2.estado = estadoLocalNuevo;
       upserts.push({ hoja: 'LOCALES', fila: l2 });

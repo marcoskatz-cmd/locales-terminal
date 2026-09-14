@@ -58,6 +58,13 @@ Colores elegidos para visión rojo-verde: sin rojo ni verde puro, siempre con et
 - La carga inicial de datos pasa por la **planilla de relevamiento Excel** (`docs/`), prellenada desde el plano y con los mismos desplegables que la app. `generar-datos.py` la convierte y valida (columnas, coherencia local ↔ contrato). Los contratos sin fechas o monto entran como VIGENTE con observación `INCOMPLETO` y la app los marca "Contrato incompleto" hasta que se completen.
 - Nuevo estado visual **uso interno** (`activo = false`, columna `se_alquila = NO`): depósitos, organismos. Quedan en el mapa en gris claro y no cuentan para ocupación ni deuda.
 
+## Actualización 2026-09-14 (2): planillas de alquileres y cobranzas
+
+- **La unidad ya no es "la habitación del plano" sino la unidad de la planilla de alquileres.** Hay ~200: boleterías, locales, depósitos, góndolas (en el hall, no dibujadas), oficinas (planta alta, sin plano), encomiendas, corta distancia y predio norte. `LOCALES` gana `categoria` y `zonas` (ids del SVG separados por `;`, cero o varias). `planta` toma PB / PA / EXT.
+- **Estado `JUDICIAL`** (en gestión judicial / desalojo): se puede marcar con o sin contrato vigente; cuenta como ocupado en la ocupación pero se distingue en el mapa (violeta rayado). Un contrato nuevo solo pasa el local a ALQUILADO si estaba LIBRE.
+- **Cuotas y pagos históricos** entran por planilla: cuota = total del mes de cobranzas ("todo concepto", con IVA), pagos por medio y fecha, retenciones como medio `RETENCIÓN`. El monto de contrato se toma del último total facturado; el precio acordado y las expensas de la planilla de alquileres quedan en observaciones hasta que administración decida cómo separarlos.
+- **Cruce automático** (`importar-alquileres.py`): zona ↔ unidad por tokens de número (rangos "48-53", subunidades "41A", número base "61" ↔ "61A-61B"), sector, hilera (boleterías al norte en Blocks 1–4), nombre; cobranza ↔ unidad por número + similitud de razón social, con alias para las filas sin número (Cencosud, Villa Gloria, Aconquija). Nada se descarta: lo dudoso va a la hoja REVISAR.
+
 ## Puntos de reemplazo
 
 1. `planos/planta-baja.svg` y `planos/planta-alta.svg` → plano real, un elemento con `id="L-XX"` por local.

@@ -13,8 +13,20 @@
   var localSel = null;
   var tabFicha = 'resumen';
   var filtroEstado = 'todos';
+  var filtroCategoria = '';
   var textoBusqueda = '';
   var svgCache = {};
+  var zonaALocal = {};          // id de zona del SVG -> id_local (una unidad puede tener varias zonas)
+
+  function zonasDe(l) { return String(l.zonas || '').split(';').map(function (z) { return z.trim(); }).filter(Boolean); }
+  function reindexarZonas() {
+    zonaALocal = {};
+    D.locales.forEach(function (l) { zonasDe(l).forEach(function (z) { zonaALocal[z] = l.id_local; }); });
+    // Compatibilidad: si una unidad no declara zonas pero existe una zona con su mismo id, se usa
+    D.locales.forEach(function (l) { if (!zonasDe(l).length && !zonaALocal[l.id_local]) zonaALocal[l.id_local] = l.id_local; });
+  }
+  function localDeZona(idZona) { var id = zonaALocal[idZona]; return id ? D.locales.filter(function (x) { return x.id_local === id; })[0] : null; }
+  function tienePlano(planta) { return CONFIG.PLANTAS.some(function (p) { return p.id === planta; }); }
 
   var $ = function (id) { return document.getElementById(id); };
   var HOY = REGLAS.hoyISO();
@@ -51,23 +63,24 @@
       }
     });
     var mantPend = D.mantenimiento.filter(function (m) { return m.id_local === l.id_local && m.estado !== 'RESUELTO'; });
-    var estadoVisual = l.activo === false ? 'inactivo' : l.estado === 'REFACCION' ? 'refaccion' : l.estado === 'LIBRE' ? 'libre' : (vencidas.length ? 'deuda' : 'aldia');
+    var estadoVisual = l.activo === false ? 'inactivo' : l.estado === 'REFACCION' ? 'refaccion' : l.estado === 'JUDICIAL' ? 'judicial' : l.estado === 'LIBRE' ? 'libre' : (vencidas.length ? 'deuda' : 'aldia');
     var totalDeuda = deuda.ALQUILER.monto + deuda.EXPENSAS.monto;
     return { contrato: vig, deuda: deuda, totalDeuda: totalDeuda, vencidas: vencidas, mantPend: mantPend, estadoVisual: estadoVisual,
       contratoIncompleto: !!vig && (!vig.fecha_fin || !REGLAS.num(vig.monto_alquiler)),
       diasVenc: vig && vig.fecha_fin ? diasHasta(vig.fecha_fin) : null, diasAjuste: vig && vig.proxima_fecha_ajuste ? diasHasta(vig.proxima_fecha_ajuste) : null };
   }
-  var NOMBRE_ESTADO = { libre: 'Libre', aldia: 'Alquilado · al día', deuda: 'Alquilado · con deuda', refaccion: 'En refacción', inactivo: 'Uso interno (no se alquila)' };
+  var NOMBRE_ESTADO = { libre: 'Libre', aldia: 'Alquilado · al día', deuda: 'Alquilado · con deuda', refaccion: 'En refacción', judicial: 'En gestión judicial', inactivo: 'Uso interno (no se alquila)', sindatos: 'Zona sin unidad asignada' };
   function etiquetaCorta(l) { return String(l.nombre || l.id_local).replace(/^local\s+/i, ''); }
 
   function localesFiltrados() {
     var t = textoBusqueda.toLowerCase();
     return D.locales.map(function (l) { return { l: l, r: resumenLocal(l) }; }).filter(function (x) {
       if (sectorActual !== 'TODO' && x.l.sector !== sectorActual) return false;
+      if (filtroCategoria && x.l.categoria !== filtroCategoria) return false;
       if (filtroEstado === 'mant' && !x.r.mantPend.length) return false;
-      if (['libre', 'aldia', 'deuda', 'refaccion', 'inactivo'].indexOf(filtroEstado) >= 0 && x.r.estadoVisual !== filtroEstado) return false;
+      if (['libre', 'aldia', 'deuda', 'refaccion', 'judicial', 'inactivo'].indexOf(filtroEstado) >= 0 && x.r.estadoVisual !== filtroEstado) return false;
       if (t) {
-        var blob = [x.l.id_local, x.l.nombre, x.l.rubro, x.l.sector, x.r.contrato ? x.r.contrato.inquilino : ''].join(' ').toLowerCase();
+        var blob = [x.l.id_local, x.l.nombre, x.l.rubro, x.l.sector, x.l.categoria, x.l.zonas, x.r.contrato ? x.r.contrato.inquilino : ''].join(' ').toLowerCase();
         if (blob.indexOf(t) < 0) return false;
       }
       return true;
@@ -109,33 +122,41 @@
 
   function renderKpis() {
     var act = D.locales.filter(function (l) { return l.activo !== false; });
-    var m2Tot = 0, m2Alq = 0, alq = 0, deuda = 0, deudaLoc = 0, mant = 0, libres = 0;
+    var m2Tot = 0, m2Alq = 0, alq = 0, jud = 0, deuda = 0, deudaLoc = 0, mant = 0, libres = 0;
     act.forEach(function (l) {
       var r = resumenLocal(l); m2Tot += REGLAS.num(l.m2);
       if (l.estado === 'ALQUILADO') { alq++; m2Alq += REGLAS.num(l.m2); }
+      if (l.estado === 'JUDICIAL') { jud++; m2Alq += REGLAS.num(l.m2); }
       if (l.estado === 'LIBRE') libres++;
       if (r.totalDeuda > 0) { deuda += r.totalDeuda; deudaLoc++; }
     });
     mant = D.mantenimiento.filter(function (m) { return m.estado !== 'RESUELTO'; }).length;
-    var pct = act.length ? Math.round(alq / act.length * 100) : 0;
+    var pct = act.length ? Math.round((alq + jud) / act.length * 100) : 0;
     $('kpis').innerHTML =
-      kpi('Ocupación', pct + '%', alq + ' de ' + act.length + ' locales', 'kpi-ok') +
+      kpi('Ocupación', pct + '%', (alq + jud) + ' de ' + act.length + ' unidades' + (jud ? ' · ' + jud + ' en gestión judicial' : ''), 'kpi-ok') +
       (m2Tot ? kpi('m² alquilados', m2Alq.toLocaleString('es-AR'), 'de ' + m2Tot.toLocaleString('es-AR') + ' m² · libres: ' + (m2Tot - m2Alq).toLocaleString('es-AR'), '')
         : kpi('m² alquilados', '—', 'falta cargar superficies', '')) +
-      kpi('Locales libres', libres, libres === 1 ? 'disponible' : 'disponibles', '') +
-      kpi('Deuda total', fmtMonto(deuda), deudaLoc + (deudaLoc === 1 ? ' local con deuda' : ' locales con deuda'), 'kpi-deuda') +
+      kpi('Unidades libres', libres, libres === 1 ? 'disponible' : 'disponibles', '') +
+      kpi('Deuda total', fmtMonto(deuda), deudaLoc + (deudaLoc === 1 ? ' unidad con deuda' : ' unidades con deuda'), 'kpi-deuda') +
       kpi('Mant. pendiente', mant, mant === 1 ? 'trabajo abierto' : 'trabajos abiertos', 'kpi-mant');
   }
   function kpi(label, valor, sub, cls) { return '<div class="kpi ' + cls + '"><div class="kpi-label">' + label + '</div><div class="kpi-valor">' + valor + '</div><div class="kpi-sub">' + sub + '</div></div>'; }
 
   function renderFiltros() {
-    var cnt = { todos: 0, libre: 0, aldia: 0, deuda: 0, refaccion: 0, inactivo: 0, mant: 0 };
+    var cnt = { todos: 0, libre: 0, aldia: 0, deuda: 0, refaccion: 0, judicial: 0, inactivo: 0, mant: 0 };
     D.locales.forEach(function (l) {
       if (sectorActual !== 'TODO' && l.sector !== sectorActual) return;
+      if (filtroCategoria && l.categoria !== filtroCategoria) return;
       var r = resumenLocal(l); cnt.todos++; cnt[r.estadoVisual] = (cnt[r.estadoVisual] || 0) + 1; if (r.mantPend.length) cnt.mant++;
     });
     var defs = [['todos', 'Todos'], ['libre', 'Libres'], ['aldia', 'Al día'], ['deuda', 'Con deuda'], ['refaccion', 'Refacción'], ['mant', 'Con mant.']];
+    if (cnt.judicial) defs.push(['judicial', 'Judicial']);
     if (cnt.inactivo) defs.push(['inactivo', 'Uso interno']);
+    // Selector de categoría (boletería / local / góndola / oficina...)
+    var cats = (D.listas.categorias || []).filter(function (c) { return D.locales.some(function (l) { return l.categoria === c; }); });
+    var sel = $('filtro-categoria');
+    if (sel && cats.length) { sel.hidden = false; sel.innerHTML = '<option value="">Todas las categorías</option>' + opciones(cats, filtroCategoria); sel.onchange = function () { filtroCategoria = sel.value; renderFiltros(); renderLista(); pintarMapa(); }; }
+    else if (sel) sel.hidden = true;
     $('filtros').innerHTML = defs.map(function (d) { return '<button class="chip' + (filtroEstado === d[0] ? ' activo' : '') + '" data-f="' + d[0] + '">' + d[1] + '<span class="n">' + cnt[d[0]] + '</span></button>'; }).join('');
     $('filtros').querySelectorAll('.chip').forEach(function (b) { b.onclick = function () { filtroEstado = b.dataset.f; renderFiltros(); renderLista(); pintarMapa(); }; });
   }
@@ -146,6 +167,7 @@
     $('lista-locales').innerHTML = items.map(function (x) {
       var det = x.r.estadoVisual === 'inactivo' ? (x.r.contrato ? x.r.contrato.inquilino : (x.l.rubro || 'Uso interno'))
         : x.r.contrato ? x.r.contrato.inquilino : (x.l.estado === 'REFACCION' ? 'En refacción' : 'Libre' + (REGLAS.num(x.l.m2) ? ' · ' + x.l.m2 + ' m²' : ''));
+      if (!zonasDe(x.l).length && !(sinZonaEnPlano(x.l) === false)) det += ' · sin ubicación en el plano';
       var tag = x.r.totalDeuda > 0 ? fmtMonto(x.r.totalDeuda) : (x.r.mantPend.length ? '🔧 ' + x.r.mantPend.length : (x.r.contratoIncompleto ? '<span title="Faltan datos del contrato">contrato incompleto</span>' : ''));
       var donde = sectorActual === 'TODO' ? (x.l.sector || nombrePlanta(x.l.planta)) : '';
       return '<li data-id="' + x.l.id_local + '" class="' + (localSel === x.l.id_local ? 'sel' : '') + '">' +
@@ -156,10 +178,18 @@
     $('lista-locales').querySelectorAll('li').forEach(function (li) { li.onclick = function () { abrirFicha(li.dataset.id, null, false); }; });
   }
 
+  // true si la unidad no está dibujada en el plano de su planta (false si sí está; null si su planta no tiene plano)
+  function sinZonaEnPlano(l) {
+    if (!tienePlano(l.planta)) return null;
+    var svg = $('mapa').querySelector('svg'); if (!svg) return null;
+    var zs = zonasDe(l); if (!zs.length) zs = [l.id_local];
+    return !zs.some(function (z) { return !!svg.getElementById(z); });
+  }
+
   // ---------- sectores (vistas con zoom dentro de una planta) ----------
   function sectoresDePlanta() {
     var presentes = {};
-    D.locales.forEach(function (l) { if (l.planta === plantaActual && l.sector) presentes[l.sector] = (presentes[l.sector] || 0) + 1; });
+    D.locales.forEach(function (l) { if (l.sector) presentes[l.sector] = (presentes[l.sector] || 0) + 1; });
     var orden = CONFIG.SECTORES || [];
     return Object.keys(presentes).sort(function (a, b) { var ia = orden.indexOf(a), ib = orden.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b); })
       .map(function (s) { return { id: s, n: presentes[s] }; });
@@ -178,9 +208,12 @@
     var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, n = 0;
     D.locales.forEach(function (l) {
       if (l.sector !== sector) return;
-      var z = svg.getElementById(l.id_local); if (!z) return;
-      var bb = z.getBBox(); n++;
-      x0 = Math.min(x0, bb.x); y0 = Math.min(y0, bb.y); x1 = Math.max(x1, bb.x + bb.width); y1 = Math.max(y1, bb.y + bb.height);
+      var zs = zonasDe(l); if (!zs.length) zs = [l.id_local];
+      zs.forEach(function (idz) {
+        var z = svg.getElementById(idz); if (!z) return;
+        var bb = z.getBBox(); n++;
+        x0 = Math.min(x0, bb.x); y0 = Math.min(y0, bb.y); x1 = Math.max(x1, bb.x + bb.width); y1 = Math.max(y1, bb.y + bb.height);
+      });
     });
     if (!n) return vistaBase.slice();
     var mx = (x1 - x0) * 0.08 + 4, my = (y1 - y0) * 0.12 + 4;
@@ -278,6 +311,12 @@
     if (!svg) return;
     svg.removeAttribute('width'); svg.removeAttribute('height');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    reindexarZonas();
+    // Patrón para "en gestión judicial" (violeta rayado), por si el SVG no lo trae
+    if (!svg.querySelector('#rayado-judicial')) {
+      var defs = svg.querySelector('defs') || svg.insertBefore(document.createElementNS('http://www.w3.org/2000/svg', 'defs'), svg.firstChild);
+      defs.insertAdjacentHTML('beforeend', '<pattern id="rayado-judicial" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="#ede9fe"/><line x1="0" y1="0" x2="0" y2="6" stroke="#7e22ce" stroke-width="2.5"/></pattern>');
+    }
     vistaBase = (svg.getAttribute('viewBox') || '0 0 1000 600').split(/[\s,]+/).map(Number);
     vistaBase = ajustarAspecto(vistaBase);
     vistaSector = cajaSector(sectorActual);
@@ -286,17 +325,22 @@
     // Avisar si el plano tiene zonas sin local o locales sin zona (diagnóstico del plano)
     var zonas = Array.prototype.slice.call(svg.querySelectorAll('.zona'));
     var idsPlano = zonas.map(function (z) { return z.id; });
-    var idsDatos = D.locales.filter(function (l) { return l.planta === p.id; }).map(function (l) { return l.id_local; });
-    var sinDatos = idsPlano.filter(function (i) { return idsDatos.indexOf(i) < 0; });
-    var sinZona = idsDatos.filter(function (i) { return idsPlano.indexOf(i) < 0; });
-    if (sinDatos.length || sinZona.length) console.warn('Plano ' + p.id + ' — zonas sin local en datos: ' + sinDatos.join(', ') + ' | locales sin zona en el plano: ' + sinZona.join(', '));
+    var sinDatos = idsPlano.filter(function (i) { return !zonaALocal[i]; });
+    var sinZona = D.locales.filter(function (l) { return l.planta === p.id && !(zonasDe(l).length ? zonasDe(l) : [l.id_local]).some(function (z) { return idsPlano.indexOf(z) >= 0; }); }).map(function (l) { return l.id_local; });
+    if (sinDatos.length || sinZona.length) console.warn('Plano ' + p.id + ' — zonas sin unidad asignada: ' + sinDatos.join(', ') + ' | unidades de esta planta sin zona en el plano: ' + sinZona.join(', '));
     zonas.forEach(function (z) {
-      var l = D.locales.filter(function (x) { return x.id_local === z.id; })[0];
-      z.onclick = function () { if (l) abrirFicha(l.id_local, null, true); };
+      var l = localDeZona(z.id);
+      var t0 = z.querySelector('title'); var etiquetaPlano = t0 ? t0.textContent : z.id.replace(/^L-/, '');
+      z.setAttribute('data-etiqueta', etiquetaPlano);
+      z.onclick = function () {
+        var lz = localDeZona(z.id);
+        if (lz) abrirFicha(lz.id_local, null, true);
+        else toast('La zona ' + z.id + ' del plano no tiene unidad asignada. Se asigna en la planilla de relevamiento (columna zonas_plano).', true);
+      };
       var bb = z.getBBox();
       var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('class', 'etiqueta'); g.setAttribute('data-for', z.id);
-      var texto = l ? etiquetaCorta(l) : z.id;
+      var texto = etiquetaPlano;   // el número que figura en el plano, que es como lo nombra todo el mundo
       // Tamaño de letra proporcional a la zona: entra en el ancho y no supera la mitad del alto
       var fs = Math.max(2, Math.min(16, bb.width / (Math.max(texto.length, 2) * 0.62), bb.height * 0.5));
       var conSub = bb.width > 26 && bb.height > 16;
@@ -309,16 +353,20 @@
       var br = Math.max(2.5, Math.min(8, Math.min(bb.width, bb.height) * 0.28));
       badge.innerHTML = '<circle cx="' + (bb.x + bb.width - br - 1) + '" cy="' + (bb.y + br + 1) + '" r="' + br + '"/><text x="' + (bb.x + bb.width - br - 1) + '" y="' + (bb.y + br + 1 + br * 0.4) + '" text-anchor="middle" font-size="' + (br * 1.15) + '">🔧</text>';
       g.parentNode.insertBefore(badge, g.nextSibling);
-      var t = document.createElementNS('http://www.w3.org/2000/svg', 'title'); z.appendChild(t);
+      if (!t0) { var t = document.createElementNS('http://www.w3.org/2000/svg', 'title'); z.appendChild(t); }
     });
   }
   function pintarMapa() {
     var svg = $('mapa').querySelector('svg'); if (!svg) return;
     var visibles = {}; localesFiltrados().forEach(function (x) { visibles[x.l.id_local] = true; });
     svg.querySelectorAll('.zona').forEach(function (z) {
-      var l = D.locales.filter(function (x) { return x.id_local === z.id; })[0];
+      var l = localDeZona(z.id);
       var et = svg.querySelector('.etiqueta[data-for="' + z.id + '"]'), bd = svg.querySelector('.badge-mant[data-for="' + z.id + '"]');
-      if (!l) { z.setAttribute('data-estado', 'libre'); return; }
+      if (!l) {
+        z.setAttribute('data-estado', 'sindatos'); z.classList.remove('sel');
+        var t0 = z.querySelector('title'); if (t0) t0.textContent = z.id + ' · sin unidad asignada';
+        return;
+      }
       var r = resumenLocal(l);
       z.setAttribute('data-estado', r.estadoVisual);
       z.classList.toggle('sel', localSel === l.id_local);
@@ -336,8 +384,8 @@
   async function abrirFicha(id, tab, desdeMapa) {
     localSel = id; if (tab) tabFicha = tab;
     var l = D.locales.filter(function (x) { return x.id_local === id; })[0];
-    if (l && l.planta !== plantaActual) { await cambiarPlanta(l.planta); }
-    if (l && !desdeMapa && l.sector && sectorActual !== l.sector) cambiarSector(l.sector);
+    if (l && l.planta !== plantaActual && tienePlano(l.planta)) { await cambiarPlanta(l.planta); }
+    if (l && !desdeMapa && l.sector && sectorActual !== l.sector && tienePlano(l.planta)) cambiarSector(l.sector);
     $('ficha').hidden = false; $('ficha-fondo').hidden = false; $('panel-alertas').hidden = true;
     renderFicha(); renderLista(); pintarMapa();
   }
@@ -346,7 +394,8 @@
   function renderFicha() {
     var l = D.locales.filter(function (x) { return x.id_local === localSel; })[0]; if (!l) return;
     var r = resumenLocal(l);
-    $('ficha-id').textContent = l.id_local + ' · ' + nombrePlanta(l.planta) + (l.sector ? ' · ' + l.sector : '');
+    var ubic = tienePlano(l.planta) ? nombrePlanta(l.planta) : (l.planta === 'PA' ? 'Planta alta (sin plano)' : l.planta === 'EXT' ? 'Predio / exterior' : l.planta);
+    $('ficha-id').textContent = l.id_local + (l.categoria ? ' · ' + l.categoria : '') + ' · ' + ubic + (l.sector ? ' · ' + l.sector : '') + (zonasDe(l).length ? ' · plano: ' + zonasDe(l).join(', ') : (tienePlano(l.planta) ? ' · sin ubicación en el plano' : ''));
     $('ficha-titulo').textContent = l.nombre + (r.contrato ? ' — ' + r.contrato.inquilino : '');
     $('ficha-sub').textContent = (REGLAS.num(l.m2) ? l.m2 + ' m²' : 'superficie sin cargar') + (l.rubro ? ' · ' + l.rubro : '');
     $('ficha-estado').innerHTML = '<span class="pill pill-' + r.estadoVisual + '">' + NOMBRE_ESTADO[r.estadoVisual] + '</span>' +
@@ -367,7 +416,7 @@
       dato('Rubro', esc(l.rubro)) + dato('Sector', esc(l.sector)) + dato('Observaciones', esc(l.observaciones), true) + '</div></div>';
     if (r.contrato) {
       var c = r.contrato;
-      if (r.contratoIncompleto) h += '<div class="aviso">Este contrato se cargó desde el plano y le faltan datos (fechas, monto). Completalo desde la pestaña Contrato → Editar, o en la planilla de relevamiento.</div>';
+      if (r.contratoIncompleto) h += '<div class="aviso">A este contrato le faltan datos (fechas de inicio y fin, o monto): se cargó desde las planillas de alquileres y cobranzas, que no los tienen. Completalo desde la pestaña Contrato → Editar, o en la planilla de relevamiento.</div>';
       h += '<div class="bloque"><h3>Contrato vigente <button class="btn btn-chico" data-tab-ir="contrato">Ver</button></h3><div class="datos">' +
         dato('Inquilino', esc(c.inquilino)) + dato('Alquiler mensual', fmtMonto(c.monto_alquiler)) +
         dato('Vence', fmtFecha(c.fecha_fin) + avisoDias(r.diasVenc, 'vence')) + dato('Próximo ajuste', c.proxima_fecha_ajuste ? fmtFecha(c.proxima_fecha_ajuste) + ' (' + esc(c.indice_ajuste) + ')' + avisoDias(r.diasAjuste, 'ajusta') : '—') + '</div></div>';
@@ -525,13 +574,15 @@
   function formLocal(l, r) {
     var vig = !!r.contrato;
     // POKAYOKE: solo se ofrecen los estados que son válidos en esta situación
+    var NOM = { LIBRE: 'LIBRE', ALQUILADO: 'ALQUILADO', REFACCION: 'EN REFACCIÓN', JUDICIAL: 'EN GESTIÓN JUDICIAL' };
     var estados = REGLAS.ESTADOS_LOCAL.map(function (e) {
       var dis = (e === 'LIBRE' && vig) || (e === 'ALQUILADO' && !vig);
-      return '<option value="' + e + '"' + (l.estado === e ? ' selected' : '') + (dis ? ' disabled' : '') + '>' + e + (dis ? (e === 'LIBRE' ? ' (tiene contrato vigente)' : ' (cargá el contrato primero)') : '') + '</option>';
+      return '<option value="' + e + '"' + (l.estado === e ? ' selected' : '') + (dis ? ' disabled' : '') + '>' + NOM[e] + (dis ? (e === 'LIBRE' ? ' (tiene contrato vigente)' : ' (cargá el contrato primero)') : '') + '</option>';
     }).join('');
     abrirModal('Editar ' + l.nombre,
-      campo('Estado', '<select name="estado">' + estados + '</select>', true, vig ? 'Para dejarlo LIBRE primero finalizá el contrato desde la pestaña Contrato.' : 'ALQUILADO se activa solo al cargar un contrato.') +
-      campo('Nombre', inp('nombre', l.nombre, 'required')) + campo('Superficie (m²)', inp('m2', l.m2, 'type="number" min="1" step="0.5" required')) +
+      campo('Estado', '<select name="estado">' + estados + '</select>', true, vig ? 'Para dejarlo LIBRE primero finalizá el contrato desde la pestaña Contrato. JUDICIAL se puede marcar con el contrato vigente.' : 'ALQUILADO se activa solo al cargar un contrato.') +
+      campo('Nombre', inp('nombre', l.nombre, 'required')) + campo('Categoría', sel('categoria', D.listas.categorias || [], l.categoria, '— sin categoría —')) +
+      campo('Superficie (m²)', inp('m2', l.m2, 'type="number" min="0" step="0.5"'), false, 'Vacío o 0 si no se conoce.') +
       campo('Rubro', sel('rubro', D.listas.rubros, l.rubro, '— sin rubro —')) + campo('Sector', sel('sector', D.listas.sectores, l.sector, '— sin sector —')) +
       campo('Observaciones', '<textarea name="observaciones">' + esc(l.observaciones) + '</textarea>', true),
       function (fd) { fd.id_local = l.id_local; return API.guardarLocal(fd); });
@@ -619,7 +670,8 @@
   function mostrarAyuda() {
     abrirModal('Cómo se usa',
       '<div class="ayuda-texto ancho campo">' +
-      '<h3>El mapa</h3><p>Cada local aparece dibujado sobre el plano. El color dice cómo está: <strong>gris</strong> libre, <strong>teal</strong> alquilado y al día, <strong>naranja</strong> alquilado con deuda, <strong>azul rayado</strong> en refacción, <strong>gris claro</strong> de uso interno (no se alquila). El ícono 🔧 marca que tiene un trabajo de mantenimiento sin resolver, sea cual sea su color.</p>' +
+      '<h3>El mapa</h3><p>Cada local aparece dibujado sobre el plano. El color dice cómo está: <strong>gris</strong> libre, <strong>teal</strong> alquilado y al día, <strong>naranja</strong> alquilado con deuda, <strong>azul rayado</strong> en refacción, <strong>violeta rayado</strong> en gestión judicial, <strong>gris claro</strong> de uso interno (no se alquila). El ícono 🔧 marca que tiene un trabajo de mantenimiento sin resolver, sea cual sea su color. Una zona punteada es una habitación del plano que todavía no tiene unidad asignada.</p>' +
+      '<p>No todo está en el plano: las <strong>góndolas</strong> del hall, las <strong>oficinas de planta alta</strong> y el <strong>predio norte</strong> aparecen solo en la lista de la izquierda (filtrá por categoría). Una unidad puede ocupar varias zonas del plano (por ejemplo 41A y 41B).</p>' +
       '<p>Arriba del plano están los <strong>sectores</strong> (Block 1 a 8): al elegir uno el mapa hace zoom ahí y la lista de la izquierda muestra solo esos locales. También podés acercar con la rueda del mouse (o dos dedos en el celular), arrastrar para moverte y volver a la vista del sector con ⌂.</p>' +
       '<h3>La ficha</h3><p>Hacé click en un local (en el plano o en la lista de la izquierda) y se abre su ficha con cinco pestañas: Resumen, Contrato, Pagos, Mantenimiento e Historial. Desde ahí se edita todo.</p>' +
       '<h3>Qué se carga a mano y qué no</h3><ul><li>El estado <strong>ALQUILADO</strong> lo pone la app sola cuando cargás un contrato, y lo saca cuando lo finalizás. No se puede forzar.</li><li>La <strong>deuda</strong> se calcula con las cuotas vencidas sin pagar. Para que un local figure al día, registrá el pago.</li><li>Lo único que marcás vos es <strong>LIBRE</strong> o <strong>EN REFACCIÓN</strong> (botón Editar en Resumen).</li></ul>' +

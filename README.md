@@ -8,26 +8,31 @@ Gestión de locales comerciales: mapa en planta con zoom por sector, ficha por l
 
 ## Estado actual
 
-- El **plano real** (CONFORME A OBRA 2026, planta única, 8 sectores "Block 1..8") ya está integrado: 147 locales detectados automáticamente.
-- Los datos salen de la **planilla de relevamiento** `docs/Relevamiento locales Terminal.xlsx`, prellenada desde el plano (inquilino que figura en cada local, VACÍO = libre). Falta que administración la complete: m², rubro, fechas y montos de contrato.
-- `CONFIG.API_URL` en [config.js](config.js) está vacío: la app corre en modo demostración (lee `mock/datos.json`, PIN `1234`), con los locales reales y contratos marcados como incompletos.
+- **Plano real** (CONFORME A OBRA 2026, planta baja, sectores Block 1..8): 147 zonas detectadas automáticamente.
+- **Unidades reales** (sep-2026): ~200, tomadas de la planilla "Alquileres Terminal" (boleterías, locales, depósitos, góndolas del hall, oficinas de planta alta, encomiendas, predio norte), con superficie, rubro, precio acordado y notas. No todas están en el plano: góndolas, oficinas y predio aparecen solo en la lista.
+- **Cobranzas mayo–agosto 2026** cargadas como cuotas (total del mes, "todo concepto") y pagos (transferencia / efectivo / cheque / retención, con fecha). La deuda que muestra la app sale de ahí.
+- Lo que falta de los contratos (fechas de inicio y fin, CUIT, depósito, índice) no está en ninguna fuente: la app los marca "Contrato incompleto" hasta que se completen en la planilla.
+- `CONFIG.API_URL` en [config.js](config.js) está vacío: la app corre en modo demostración (lee `mock/datos.json`, PIN `1234`).
 
 ## Flujo de datos
 
 ```
-CONFORME A OBRA 2026.pdf
-   │  herramientas/extraer-plano.py <pdf> [--debug]
-   ▼
-planos/planta-baja.png + planos/planta-baja.svg + herramientas/plano-locales.json
-   │  herramientas/generar-relevamiento.py           (no pisa la planilla si ya existe)
-   ▼
-docs/Relevamiento locales Terminal.xlsx   ←── administración completa LOCALES / CONTRATOS / MANTENIMIENTO
+CONFORME A OBRA 2026.pdf                                   Alquileres Terminal.xlsx + COBRANZAS mayo-Agosto.xlsx
+   │  herramientas/extraer-plano.py <pdf> [--debug]                     │
+   ▼                                                                    │
+planos/planta-baja.png + .svg + herramientas/plano-locales.json ────────┤
+                                                                        │  herramientas/importar-alquileres.py <alquileres> <cobranzas>
+                                                                        ▼
+docs/Relevamiento locales Terminal.xlsx   ←── administración revisa REVISAR y completa LOCALES / CONTRATOS
    │  herramientas/generar-datos.py                  (avisa si falta una columna o hay incoherencias)
    ▼
 mock/datos.json (modo demo)  +  backend/MockData.js (semilla de setupApp)
 ```
 
-Cada vez que se actualiza la planilla, correr `python herramientas/generar-datos.py` y pushear.
+- `importar-alquileres.py` **pisa** la planilla de relevamiento: correrlo solo cuando lleguen planillas fuente nuevas. Las hojas CRUCE y REVISAR explican cada emparejamiento (zona ↔ unidad, cobranza ↔ unidad) y qué quedó dudoso.
+- Cada vez que se corrige la planilla a mano, correr `python herramientas/generar-datos.py` y pushear.
+- Ids de unidad: categoría + número (`BOL-1-2`, `LOC-501`, `GON-3`, `OFI-7`, `DEP-305`, `ENC-512`, `COB-…` para las que solo aparecen en cobranzas). El número solo no alcanza: hay un 9 boletería, un 9 local y un 9 góndola.
+- Una unidad puede ocupar varias zonas del plano (`zonas_plano = L-41A;L-41B`) o ninguna.
 
 ## Pasar a producción (una sola vez)
 
@@ -65,8 +70,8 @@ backend/Setup.js                   setupApp(), borrarDatosMock(), cambiarPin()
 backend/Importar.js                enganche para importar cobranzas de planillas existentes
 backend/MockData.js                semilla generada desde el relevamiento
 planos/planta-baja.png|svg         fondo del plano + zonas clickeables
-docs/Relevamiento locales Terminal.xlsx   planilla que completa administración
-herramientas/                      extraer-plano.py · generar-relevamiento.py · generar-datos.py · plano-locales.json
+docs/Relevamiento locales Terminal.xlsx   planilla que revisa y completa administración (LOCALES, CONTRATOS, CUOTAS, PAGOS, CRUCE, REVISAR)
+herramientas/                      extraer-plano.py · importar-alquileres.py · generar-datos.py · plano-locales.json
 ```
 
 ## Desarrollo local

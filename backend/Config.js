@@ -6,7 +6,7 @@ var VERSION_ESQUEMA = 1;
 
 // Encabezados de cada hoja, en orden. El backend referencia columnas por nombre, nunca por número.
 var ESQUEMA = {
-  LOCALES: ['id_local', 'nombre', 'planta', 'sector', 'm2', 'rubro', 'estado', 'observaciones', 'activo'],
+  LOCALES: ['id_local', 'nombre', 'categoria', 'planta', 'sector', 'zonas', 'm2', 'rubro', 'estado', 'observaciones', 'activo'],
   CONTRATOS: ['id_contrato', 'id_local', 'inquilino', 'cuit', 'contacto', 'fecha_inicio', 'fecha_fin', 'monto_alquiler',
     'indice_ajuste', 'periodicidad_meses', 'proxima_fecha_ajuste', 'deposito', 'expensas_mensuales', 'estado_contrato', 'observaciones'],
   CUOTAS: ['id_cuota', 'id_contrato', 'id_local', 'periodo', 'concepto', 'monto', 'vencimiento', 'estado'],
@@ -17,11 +17,11 @@ var ESQUEMA = {
 };
 
 // Columnas de LISTAS (cada una es un selector de la UI). Se leen por encabezado.
-var COLUMNAS_LISTAS = ['rubros', 'sectores', 'indices_ajuste', 'tipos_falla', 'intervinientes', 'medios_pago'];
+var COLUMNAS_LISTAS = ['categorias', 'rubros', 'sectores', 'indices_ajuste', 'tipos_falla', 'intervinientes', 'medios_pago'];
 
 // Columnas que se guardan como texto plano (fechas AAAA-MM-DD, ids, períodos) para que Sheets no las convierta.
 var COLUMNAS_TEXTO = {
-  LOCALES: ['id_local'],
+  LOCALES: ['id_local', 'zonas'],
   CONTRATOS: ['id_contrato', 'id_local', 'cuit', 'fecha_inicio', 'fecha_fin', 'proxima_fecha_ajuste'],
   CUOTAS: ['id_cuota', 'id_contrato', 'id_local', 'periodo', 'vencimiento'],
   PAGOS: ['id_pago', 'id_cuota', 'id_local', 'fecha'],
@@ -31,14 +31,14 @@ var COLUMNAS_TEXTO = {
 
 // Validaciones de datos (desplegables) para que la planilla también sea POKAYOKE si alguien la edita a mano.
 var VALIDACIONES = {
-  LOCALES: { estado: ['LIBRE', 'ALQUILADO', 'REFACCION'], planta: 'PLANTAS' },
+  LOCALES: { estado: ['LIBRE', 'ALQUILADO', 'REFACCION', 'JUDICIAL'], planta: 'PLANTAS', categoria: 'categorias', sector: 'sectores' },
   CONTRATOS: { estado_contrato: ['VIGENTE', 'FINALIZADO', 'RESCINDIDO'], indice_ajuste: 'indices_ajuste' },
   CUOTAS: { concepto: ['ALQUILER', 'EXPENSAS'], estado: ['PENDIENTE', 'PARCIAL', 'PAGADA'] },
   PAGOS: { medio: 'medios_pago' },
   MANTENIMIENTO: { prioridad: ['ALTA', 'MEDIA', 'BAJA'], estado: ['PENDIENTE', 'EN CURSO', 'RESUELTO'], tipo_falla: 'tipos_falla', quien_intervino: 'intervinientes' },
 };
 
-var PLANTAS = ['PB'];
+var PLANTAS = ['PB', 'PA', 'EXT'];   // PB planta baja (con plano), PA oficinas de planta alta, EXT predio norte / exteriores
 
 function prop_(clave, obligatoria) {
   var v = PropertiesService.getScriptProperties().getProperty(clave);

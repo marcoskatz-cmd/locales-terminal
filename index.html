@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Locales · Terminal INGECO</title>
 <meta name="theme-color" content="#0f172a">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260914b">
 </head>
 <body>
 
@@ -50,6 +50,7 @@
   <main class="layout">
     <aside class="lateral">
       <input id="buscador" class="buscador" type="search" placeholder="Buscar local, inquilino, rubro…">
+      <select id="filtro-categoria" class="buscador" hidden></select>
       <div class="chips" id="filtros"></div>
       <ul class="lista-locales" id="lista-locales"></ul>
     </aside>
@@ -70,7 +71,9 @@
         <span><i class="sw sw-aldia"></i>Al día</span>
         <span><i class="sw sw-deuda"></i>Con deuda</span>
         <span><i class="sw sw-refaccion"></i>Refacción</span>
+        <span><i class="sw sw-judicial"></i>Judicial</span>
         <span><i class="sw sw-inactivo"></i>Uso interno</span>
+        <span><i class="sw sw-sindatos"></i>Sin unidad</span>
         <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
         <span class="referencia-tip">Rueda del mouse o dos dedos para acercar · arrastrar para mover</span>
       </div>
@@ -119,9 +122,10 @@
   <div id="toast" class="toast" hidden></div>
 </div>
 
-<script src="config.js"></script>
-<script src="backend/Reglas.js"></script>
-<script src="api.js"></script>
-<script src="app.js"></script>
+<!-- El parámetro ?v= evita que el navegador (o GitHub Pages) sirva una versión vieja tras un deploy. Subirlo con cada cambio. -->
+<script src="config.js?v=20260914b"></script>
+<script src="backend/Reglas.js?v=20260914b"></script>
+<script src="api.js?v=20260914b"></script>
+<script src="app.js?v=20260914b"></script>
 </body>
 </html>
