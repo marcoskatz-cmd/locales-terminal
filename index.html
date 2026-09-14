@@ -56,16 +56,24 @@
 
     <section class="mapa-wrap">
       <div class="mapa-cabecera">
-        <div class="tabs" id="plantas-tabs"></div>
-        <div class="referencia">
-          <span><i class="sw sw-libre"></i>Libre</span>
-          <span><i class="sw sw-aldia"></i>Al día</span>
-          <span><i class="sw sw-deuda"></i>Con deuda</span>
-          <span><i class="sw sw-refaccion"></i>Refacción</span>
-          <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
+        <div class="tabs" id="plantas-tabs" hidden></div>
+        <div class="tabs tabs-sectores" id="sectores-tabs"></div>
+        <div class="zoom-botones">
+          <button class="btn btn-chico" id="zoom-menos" title="Alejar">−</button>
+          <button class="btn btn-chico" id="zoom-mas" title="Acercar">+</button>
+          <button class="btn btn-chico" id="zoom-reset" title="Volver a la vista del sector">⌂</button>
         </div>
       </div>
       <div class="mapa" id="mapa"><div class="cargando">Cargando plano…</div></div>
+      <div class="referencia">
+        <span><i class="sw sw-libre"></i>Libre</span>
+        <span><i class="sw sw-aldia"></i>Al día</span>
+        <span><i class="sw sw-deuda"></i>Con deuda</span>
+        <span><i class="sw sw-refaccion"></i>Refacción</span>
+        <span><i class="sw sw-inactivo"></i>Uso interno</span>
+        <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
+        <span class="referencia-tip">Rueda del mouse o dos dedos para acercar · arrastrar para mover</span>
+      </div>
     </section>
   </main>
 

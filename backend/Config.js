@@ -38,7 +38,7 @@ var VALIDACIONES = {
   MANTENIMIENTO: { prioridad: ['ALTA', 'MEDIA', 'BAJA'], estado: ['PENDIENTE', 'EN CURSO', 'RESUELTO'], tipo_falla: 'tipos_falla', quien_intervino: 'intervinientes' },
 };
 
-var PLANTAS = ['PB', 'PA'];
+var PLANTAS = ['PB'];
 
 function prop_(clave, obligatoria) {
   var v = PropertiesService.getScriptProperties().getProperty(clave);

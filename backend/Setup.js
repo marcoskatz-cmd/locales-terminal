@@ -34,7 +34,7 @@ function crearEstructura_(ss) {
 
   var plantas = ss.insertSheet('PLANTAS');
   plantas.getRange(1, 1, 1, 2).setValues([['id', 'nombre']]).setFontWeight('bold');
-  plantas.getRange(2, 1, 2, 2).setValues([['PB', 'Planta baja'], ['PA', 'Planta alta']]);
+  plantas.getRange(2, 1, 1, 2).setValues([['PB', 'Planta baja']]);
 
   Object.keys(ESQUEMA).forEach(function (hoja) {
     var sh = ss.insertSheet(hoja);

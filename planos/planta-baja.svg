@@ -1,50 +1,159 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="system-ui, sans-serif">
-  <!-- PLANO MOCK · Planta baja. Reemplazar por el plano real manteniendo un elemento con id="L-XX" por local
-       y la clase "zona". Todo lo demás (paredes, textos) es decorativo. -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="150.0 250.0 1360.0 325.0" font-family="system-ui, sans-serif">
+  <!-- GENERADO por herramientas/extraer-plano.py a partir de "CONFORME A OBRA 2026.pdf".
+       Fondo: planta-baja.png (recorte Rect(150.0, 250.0, 1510.0, 575.0)). Coordenadas en puntos del PDF.
+       Cada local es un <rect id="L-XX" class="zona">; se pueden ajustar x/y/width/height a mano sin tocar nada más. -->
   <defs>
-    <pattern id="rayado" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <rect width="10" height="10" fill="#bfdbfe"/>
-      <line x1="0" y1="0" x2="0" y2="10" stroke="#3b82f6" stroke-width="4"/>
+    <pattern id="rayado" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#bfdbfe"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#3b82f6" stroke-width="2.5"/>
     </pattern>
   </defs>
-
-  <!-- contorno del edificio -->
-  <rect x="20" y="20" width="960" height="580" fill="none" stroke="#334155" stroke-width="4"/>
-
-  <!-- andenes -->
-  <rect x="20" y="470" width="960" height="130" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="500" y="545" text-anchor="middle" font-size="22" fill="#64748b" letter-spacing="6">ANDENES</text>
-  <line x1="20" y1="470" x2="980" y2="470" stroke="#94a3b8" stroke-width="2" stroke-dasharray="10 6"/>
-
-  <!-- hall central -->
-  <rect x="330" y="60" width="340" height="380" fill="#f8fafc" stroke="#cbd5e1"/>
-  <text x="500" y="260" text-anchor="middle" font-size="18" fill="#94a3b8" letter-spacing="4">HALL CENTRAL</text>
-  <text x="500" y="285" text-anchor="middle" font-size="12" fill="#cbd5e1">boleterías · espera</text>
-
-  <!-- accesos -->
-  <text x="500" y="45" text-anchor="middle" font-size="12" fill="#64748b">ACCESO PRINCIPAL</text>
-  <rect x="440" y="18" width="120" height="8" fill="#334155"/>
-
-  <!-- pasillos -->
-  <rect x="40" y="380" width="290" height="60" fill="#f8fafc" stroke="#e2e8f0"/>
-  <rect x="670" y="380" width="290" height="60" fill="#f8fafc" stroke="#e2e8f0"/>
-  <text x="185" y="415" text-anchor="middle" font-size="12" fill="#94a3b8">ALA SUR</text>
-  <text x="815" y="415" text-anchor="middle" font-size="12" fill="#94a3b8">ALA NORTE</text>
-
-  <!-- LOCALES (zonas clickeables) -->
-  <rect id="L-01" class="zona" x="40" y="60" width="130" height="150"/>
-  <rect id="L-02" class="zona" x="180" y="60" width="140" height="150"/>
-  <rect id="L-05" class="zona" x="40" y="220" width="130" height="150"/>
-  <rect id="L-06" class="zona" x="180" y="220" width="140" height="150"/>
-
-  <rect id="L-03" class="zona" x="680" y="60" width="130" height="150"/>
-  <rect id="L-04" class="zona" x="820" y="60" width="140" height="150"/>
-
-  <!-- espacios técnicos -->
-  <rect x="680" y="220" width="280" height="150" fill="#e2e8f0" stroke="#cbd5e1"/>
-  <text x="820" y="300" text-anchor="middle" font-size="12" fill="#64748b">SANITARIOS · SALA TÉCNICA</text>
-
-  <!-- escalera -->
-  <rect x="330" y="400" width="60" height="40" fill="none" stroke="#94a3b8"/>
-  <text x="360" y="425" text-anchor="middle" font-size="10" fill="#64748b">▲ PA</text>
+  <image href="planos/planta-baja.png" x="150.0" y="250.0" width="1360.0" height="325.0" preserveAspectRatio="none"/>
+  <rect id="L-406-404" class="zona" x="249.0" y="286.1" width="38.5" height="30.1"><title>406-404</title></rect>
+  <rect id="L-409" class="zona" x="209.8" y="286.3" width="12.1" height="29.9"><title>409</title></rect>
+  <rect id="L-408" class="zona" x="222.8" y="286.3" width="12.2" height="23.6"><title>408</title></rect>
+  <rect id="L-407" class="zona" x="235.9" y="270.5" width="12.2" height="45.7"><title>407</title></rect>
+  <rect id="L-403" class="zona" x="288.4" y="270.5" width="12.2" height="45.7"><title>403</title></rect>
+  <rect id="L-402" class="zona" x="301.4" y="270.5" width="12.2" height="45.7"><title>402</title></rect>
+  <rect id="L-401" class="zona" x="314.5" y="270.5" width="12.7" height="45.7"><title>401</title></rect>
+  <rect id="L-400" class="zona" x="328.1" y="286.3" width="13.2" height="17.8"><title>400</title></rect>
+  <rect id="L-399" class="zona" x="342.2" y="286.3" width="11.2" height="17.8"><title>399</title></rect>
+  <rect id="L-398" class="zona" x="354.2" y="286.3" width="13.2" height="17.8"><title>398</title></rect>
+  <rect id="L-1A" class="zona" x="467.8" y="306.7" width="8.3" height="12.2"><title>1A</title></rect>
+  <rect id="L-37-38" class="zona" x="996.4" y="306.7" width="17.0" height="12.2"><title>37-38</title></rect>
+  <rect id="L-39-40" class="zona" x="1013.9" y="306.7" width="17.0" height="12.2"><title>39-40</title></rect>
+  <rect id="L-41-42" class="zona" x="1031.4" y="306.7" width="17.0" height="12.2"><title>41-42</title></rect>
+  <rect id="L-43-44" class="zona" x="1048.8" y="306.7" width="17.2" height="12.2"><title>43-44</title></rect>
+  <rect id="L-45-46" class="zona" x="1066.3" y="306.7" width="17.0" height="12.2"><title>45-46</title></rect>
+  <rect id="L-47-48" class="zona" x="1192.6" y="308.6" width="17.5" height="17.8"><title>47-48</title></rect>
+  <rect id="L-49-50" class="zona" x="1210.4" y="308.6" width="17.0" height="12.1"><title>49-50</title></rect>
+  <rect id="L-31" class="zona" x="858.7" y="306.7" width="8.4" height="13.6"><title>31</title></rect>
+  <rect id="L-55-58" class="zona" x="1262.9" y="308.6" width="34.6" height="12.1"><title>55-58</title></rect>
+  <rect id="L-28-29" class="zona" x="832.6" y="306.7" width="17.0" height="19.2"><title>28-29</title></rect>
+  <rect id="L-30" class="zona" x="850.1" y="306.7" width="8.3" height="13.6"><title>30</title></rect>
+  <rect id="L-32-33" class="zona" x="867.5" y="306.7" width="17.0" height="13.6"><title>32-33</title></rect>
+  <rect id="L-53-54" class="zona" x="1245.5" y="308.6" width="17.0" height="12.1"><title>53-54</title></rect>
+  <rect id="L-59-60" class="zona" x="1297.9" y="308.6" width="17.0" height="12.1"><title>59-60</title></rect>
+  <rect id="L-61-62" class="zona" x="1315.3" y="308.6" width="17.0" height="12.1"><title>61-62</title></rect>
+  <rect id="L-63-64" class="zona" x="1332.8" y="308.6" width="17.0" height="12.1"><title>63-64</title></rect>
+  <rect id="L-65-66" class="zona" x="1350.4" y="308.6" width="17.2" height="12.1"><title>65-66</title></rect>
+  <rect id="L-1-2" class="zona" x="476.4" y="306.7" width="17.0" height="12.2"><title>1-2</title></rect>
+  <rect id="L-3-4" class="zona" x="493.9" y="306.7" width="17.0" height="12.2"><title>3-4</title></rect>
+  <rect id="L-6" class="zona" x="520.2" y="306.7" width="8.3" height="18.0"><title>6</title></rect>
+  <rect id="L-27" class="zona" x="823.8" y="306.7" width="8.3" height="13.6"><title>27</title></rect>
+  <rect id="L-34-36" class="zona" x="885.0" y="306.7" width="25.9" height="13.6"><title>34-36</title></rect>
+  <rect id="L-51-52" class="zona" x="1228.0" y="308.6" width="17.0" height="12.1"><title>51-52</title></rect>
+  <rect id="L-5" class="zona" x="511.4" y="306.7" width="8.3" height="12.2"><title>5</title></rect>
+  <rect id="L-7-8" class="zona" x="528.8" y="306.7" width="17.0" height="12.2"><title>7-8</title></rect>
+  <rect id="L-9" class="zona" x="546.4" y="306.7" width="8.3" height="12.2"><title>9</title></rect>
+  <rect id="L-10" class="zona" x="555.1" y="306.7" width="8.4" height="12.2"><title>10</title></rect>
+  <rect id="L-11-15" class="zona" x="649.1" y="306.7" width="43.3" height="13.6"><title>11-15</title></rect>
+  <rect id="L-16" class="zona" x="692.9" y="306.7" width="8.2" height="19.2"><title>16</title></rect>
+  <rect id="L-17" class="zona" x="701.5" y="306.7" width="8.3" height="32.8"><title>17</title></rect>
+  <rect id="L-18" class="zona" x="710.2" y="306.7" width="8.4" height="13.6"><title>18</title></rect>
+  <rect id="L-19-20" class="zona" x="718.9" y="306.7" width="17.0" height="13.6"><title>19-20</title></rect>
+  <rect id="L-24-26" class="zona" x="797.8" y="306.7" width="25.6" height="19.2"><title>24-26</title></rect>
+  <rect id="L-21-23" class="zona" x="736.4" y="306.7" width="25.8" height="19.2"><title>21-23</title></rect>
+  <rect id="L-20" class="zona" x="626.2" y="308.5" width="16.2" height="18.0"><title>20</title></rect>
+  <rect id="L-397" class="zona" x="350.4" y="305.0" width="16.9" height="32.8"><title>397</title></rect>
+  <rect id="L-67-68" class="zona" x="1409.1" y="309.6" width="19.4" height="25.1"><title>67-68</title></rect>
+  <rect id="L-1B" class="zona" x="459.0" y="306.7" width="8.2" height="30.0"><title>1B</title></rect>
+  <rect id="L-532" class="zona" x="405.7" y="306.7" width="17.9" height="30.0"><title>532</title></rect>
+  <rect id="L-531" class="zona" x="424.0" y="306.7" width="17.0" height="30.0"><title>531</title></rect>
+  <rect id="L-530" class="zona" x="441.5" y="306.7" width="17.0" height="30.0"><title>530</title></rect>
+  <rect id="L-34" class="zona" x="917.3" y="310.6" width="15.8" height="18.0"><title>34</title></rect>
+  <rect id="L-69-70" class="zona" x="1429.0" y="312.1" width="17.0" height="15.6"><title>69-70</title></rect>
+  <rect id="L-71" class="zona" x="1446.5" y="312.5" width="8.3" height="15.2"><title>71</title></rect>
+  <rect id="L-72" class="zona" x="1455.1" y="312.5" width="8.4" height="15.2"><title>72</title></rect>
+  <rect id="L-73" class="zona" x="1463.9" y="312.5" width="8.3" height="22.2"><title>73</title></rect>
+  <rect id="L-74-75" class="zona" x="1472.6" y="312.7" width="17.0" height="15.0"><title>74-75</title></rect>
+  <rect id="L-533" class="zona" x="1083.8" y="304.8" width="17.0" height="31.9"><title>533</title></rect>
+  <rect id="L-534" class="zona" x="1101.2" y="304.8" width="17.0" height="31.9"><title>534</title></rect>
+  <rect id="L-76" class="zona" x="1490.2" y="318.0" width="21.5" height="28.0"><title>76</title></rect>
+  <rect id="L-22" class="zona" x="646.9" y="326.4" width="19.2" height="14.3"><title>22</title></rect>
+  <rect id="L-33" class="zona" x="893.8" y="326.4" width="20.5" height="14.5"><title>33</title></rect>
+  <rect id="L-301" class="zona" x="666.5" y="327.7" width="17.0" height="11.8"><title>301</title></rect>
+  <rect id="L-302" class="zona" x="684.0" y="326.4" width="17.0" height="13.1"><title>302</title></rect>
+  <rect id="L-303" class="zona" x="701.5" y="327.7" width="17.0" height="11.8"><title>303</title></rect>
+  <rect id="L-304" class="zona" x="718.9" y="327.7" width="17.0" height="11.8"><title>304</title></rect>
+  <rect id="L-305" class="zona" x="823.8" y="327.7" width="17.0" height="11.8"><title>305</title></rect>
+  <rect id="L-308" class="zona" x="876.2" y="326.4" width="17.0" height="13.1"><title>308</title></rect>
+  <rect id="L-77" class="zona" x="1402.0" y="329.3" width="17.8" height="12.8"><title>77</title></rect>
+  <rect id="L-310" class="zona" x="1210.4" y="326.9" width="17.0" height="14.8"><title>310</title></rect>
+  <rect id="L-311" class="zona" x="1228.0" y="326.9" width="17.0" height="15.2"><title>311</title></rect>
+  <rect id="L-312" class="zona" x="1245.5" y="326.9" width="17.0" height="15.2"><title>312</title></rect>
+  <rect id="L-313" class="zona" x="1262.9" y="333.0" width="17.0" height="9.1"><title>313</title></rect>
+  <rect id="L-314" class="zona" x="1280.4" y="326.9" width="17.0" height="15.2"><title>314</title></rect>
+  <rect id="L-315" class="zona" x="1297.9" y="326.9" width="34.4" height="15.2"><title>315</title></rect>
+  <rect id="L-316" class="zona" x="1332.8" y="326.9" width="35.2" height="15.2"><title>316</title></rect>
+  <rect id="L-306-307" class="zona" x="841.3" y="320.8" width="34.4" height="18.7"><title>306-307</title></rect>
+  <rect id="L-528" class="zona" x="580.0" y="330.1" width="18.7" height="19.7"><title>528</title></rect>
+  <rect id="L-26-27" class="zona" x="736.4" y="307.8" width="69.8" height="55.8"><title>26-27</title></rect>
+  <rect id="L-22_2" class="zona" x="665.5" y="340.0" width="22.0" height="16.3"><title>22</title></rect>
+  <rect id="L-502-503" class="zona" x="1191.4" y="342.1" width="36.1" height="15.2"><title>502-503</title></rect>
+  <rect id="L-32" class="zona" x="876.2" y="340.0" width="22.1" height="18.5"><title>32</title></rect>
+  <rect id="L-517A" class="zona" x="1472.6" y="328.2" width="17.0" height="30.5"><title>517a</title></rect>
+  <rect id="L-501" class="zona" x="1101.2" y="343.9" width="53.4" height="18.0"><title>501</title></rect>
+  <rect id="L-6-7" class="zona" x="288.6" y="344.0" width="29.4" height="18.0"><title>6-7</title></rect>
+  <rect id="L-2-5" class="zona" x="246.2" y="325.4" width="41.9" height="36.6"><title>2-5</title></rect>
+  <rect id="L-10A&B" class="zona" x="408.1" y="337.1" width="24.0" height="25.6"><title>10a&b</title></rect>
+  <rect id="L-28" class="zona" x="806.3" y="346.7" width="17.0" height="16.3"><title>28</title></rect>
+  <rect id="L-8" class="zona" x="329.9" y="346.4" width="37.6" height="16.9"><title>8</title></rect>
+  <rect id="L-23-25" class="zona" x="699.0" y="340.0" width="36.9" height="24.5"><title>23 a 25</title></rect>
+  <rect id="L-35" class="zona" x="936.8" y="348.6" width="20.2" height="18.0"><title>35</title></rect>
+  <rect id="L-29-31" class="zona" x="823.8" y="340.0" width="52.0" height="27.1"><title>29-31</title></rect>
+  <rect id="L-517B" class="zona" x="1490.2" y="346.9" width="18.7" height="29.5"><title>517b</title></rect>
+  <rect id="L-504" class="zona" x="1223.7" y="342.6" width="21.3" height="28.7"><title>504</title></rect>
+  <rect id="L-505-506" class="zona" x="1245.5" y="342.6" width="34.4" height="28.7"><title>505-506</title></rect>
+  <rect id="L-507" class="zona" x="1280.4" y="342.6" width="17.0" height="28.7"><title>507</title></rect>
+  <rect id="L-508" class="zona" x="1297.9" y="342.6" width="17.0" height="28.7"><title>508</title></rect>
+  <rect id="L-509" class="zona" x="1315.3" y="342.6" width="17.0" height="28.7"><title>509</title></rect>
+  <rect id="L-510-511" class="zona" x="1332.8" y="342.6" width="35.2" height="28.7"><title>510-511</title></rect>
+  <rect id="L-19" class="zona" x="598.8" y="355.4" width="30.2" height="18.0"><title>19</title></rect>
+  <rect id="L-13" class="zona" x="493.9" y="354.1" width="17.0" height="45.2"><title>13</title></rect>
+  <rect id="L-14-18" class="zona" x="511.4" y="350.3" width="86.9" height="49.1"><title>14-18</title></rect>
+  <rect id="L-512" class="zona" x="1368.0" y="349.6" width="51.8" height="27.4"><title>512</title></rect>
+  <rect id="L-12" class="zona" x="476.4" y="337.1" width="17.0" height="62.3"><title>12</title></rect>
+  <rect id="L-10C&11" class="zona" x="446.2" y="337.1" width="29.8" height="62.3"><title>10c & 11</title></rect>
+  <rect id="L-514-515" class="zona" x="1420.3" y="357.0" width="34.4" height="20.0"><title>514-515</title></rect>
+  <rect id="L-516" class="zona" x="1455.1" y="357.0" width="17.0" height="20.0"><title>516</title></rect>
+  <rect id="L-41A" class="zona" x="1048.8" y="337.1" width="52.1" height="52.1"><title>41a</title></rect>
+  <rect id="L-36" class="zona" x="961.4" y="354.1" width="17.0" height="35.0"><title>36</title></rect>
+  <rect id="L-37" class="zona" x="979.0" y="354.1" width="17.0" height="45.2"><title>37</title></rect>
+  <rect id="L-38" class="zona" x="996.4" y="354.1" width="17.0" height="45.2"><title>38</title></rect>
+  <rect id="L-39" class="zona" x="1013.9" y="354.1" width="17.0" height="45.2"><title>39</title></rect>
+  <rect id="L-40" class="zona" x="1031.4" y="354.1" width="17.0" height="45.2"><title>40</title></rect>
+  <rect id="L-535-536" class="zona" x="1245.5" y="451.8" width="34.4" height="18.0"><title>535-536</title></rect>
+  <rect id="L-537-538" class="zona" x="1280.4" y="451.8" width="34.6" height="18.0"><title>537-538</title></rect>
+  <rect id="L-522" class="zona" x="1350.4" y="454.8" width="17.0" height="21.0"><title>522</title></rect>
+  <rect id="L-521" class="zona" x="1367.8" y="454.8" width="17.0" height="21.0"><title>521</title></rect>
+  <rect id="L-523-524" class="zona" x="1214.1" y="459.8" width="30.9" height="35.9"><title>523-524</title></rect>
+  <rect id="L-41B" class="zona" x="1048.8" y="435.7" width="48.7" height="52.4"><title>41b</title></rect>
+  <rect id="L-539-540" class="zona" x="1315.3" y="461.0" width="34.6" height="40.9"><title>539-540</title></rect>
+  <rect id="L-520" class="zona" x="1385.3" y="461.2" width="17.0" height="29.6"><title>520</title></rect>
+  <rect id="L-519" class="zona" x="1402.8" y="461.2" width="17.0" height="30.1"><title>519</title></rect>
+  <rect id="L-518D" class="zona" x="1420.2" y="461.2" width="18.0" height="30.1"><title>518d</title></rect>
+  <rect id="L-518C" class="zona" x="1438.6" y="457.4" width="17.4" height="33.8"><title>518c</title></rect>
+  <rect id="L-65" class="zona" x="476.4" y="461.3" width="17.0" height="26.9"><title>65</title></rect>
+  <rect id="L-43A" class="zona" x="996.4" y="454.9" width="34.4" height="33.2"><title>43a</title></rect>
+  <rect id="L-42" class="zona" x="1031.3" y="463.9" width="17.0" height="33.5"><title>42</title></rect>
+  <rect id="L-68-69" class="zona" x="417.3" y="465.1" width="23.7" height="18.7"><title>68-69</title></rect>
+  <rect id="L-66-67" class="zona" x="441.5" y="454.1" width="34.6" height="33.5"><title>66-67</title></rect>
+  <rect id="L-62" class="zona" x="528.7" y="455.3" width="17.2" height="38.4"><title>62</title></rect>
+  <rect id="L-75B&A-74B&A" class="zona" x="253.5" y="477.1" width="43.4" height="18.0"><title>75b&a - 74b&a</title></rect>
+  <rect id="L-525" class="zona" x="1118.6" y="480.2" width="36.0" height="23.2"><title>525</title></rect>
+  <rect id="L-53-44" class="zona" x="844.5" y="482.3" width="43.1" height="18.0"><title>53 a 44</title></rect>
+  <rect id="L-61" class="zona" x="546.4" y="485.5" width="52.0" height="18.0"><title>61</title></rect>
+  <rect id="L-60" class="zona" x="598.8" y="485.5" width="24.6" height="18.0"><title>60</title></rect>
+  <rect id="L-59" class="zona" x="623.9" y="485.5" width="18.1" height="35.5"><title>59</title></rect>
+  <rect id="L-58" class="zona" x="642.5" y="485.5" width="25.8" height="18.0"><title>58</title></rect>
+  <rect id="L-56-57" class="zona" x="668.6" y="485.5" width="34.6" height="18.0"><title>56-57</title></rect>
+  <rect id="L-54-55" class="zona" x="703.7" y="485.5" width="42.2" height="18.0"><title>54-55</title></rect>
+  <rect id="L-518B" class="zona" x="1438.6" y="492.2" width="17.4" height="17.4"><title>518b</title></rect>
+  <rect id="L-43B" class="zona" x="996.4" y="488.6" width="34.4" height="38.6"><title>43b</title></rect>
+  <rect id="L-542" class="zona" x="1191.6" y="496.2" width="53.4" height="20.6"><title>542</title></rect>
+  <rect id="L-518A" class="zona" x="1420.2" y="492.2" width="18.0" height="34.6"><title>518a</title></rect>
+  <rect id="L-526&541" class="zona" x="1083.7" y="488.6" width="70.9" height="38.2"><title>526 & 541</title></rect>
+  <rect id="L-64" class="zona" x="441.5" y="523.2" width="51.7" height="24.5"><title>64</title></rect>
+  <rect id="L-529" class="zona" x="623.9" y="521.6" width="18.1" height="25.0"><title>529</title></rect>
 </svg>

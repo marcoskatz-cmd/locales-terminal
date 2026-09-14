@@ -95,7 +95,7 @@ code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; }
 .lista-locales .punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid; }
 .lista-locales .nom { font-weight: 600; font-size: .92rem; }
 .lista-locales .det { font-size: .8rem; color: var(--texto-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.lista-locales .tag { font-size: .72rem; color: var(--texto-2); text-align: right; }
+.lista-locales .tag { font-size: .72rem; color: var(--texto-2); text-align: right; max-width: 90px; line-height: 1.15; }
 .lista-vacia { color: var(--texto-3); font-size: .9rem; padding: 10px; text-align: center; }
 
 .mapa-wrap { background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio); padding: 12px; min-width: 0; }
@@ -112,23 +112,33 @@ code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; }
 .sw-refaccion { background: repeating-linear-gradient(45deg, #bfdbfe 0 3px, #3b82f6 3px 5px); border-color: var(--refac-b); }
 .sw-mant { border: 0; width: auto; height: auto; font-style: normal; font-size: .9rem; }
 
-.mapa { position: relative; }
-.mapa svg { width: 100%; height: auto; display: block; max-height: 72vh; }
+.mapa { position: relative; background: #fafbfc; border: 1px solid var(--borde); border-radius: 8px; overflow: hidden; }
+.mapa svg { width: 100%; height: 62vh; min-height: 320px; display: block; touch-action: none; cursor: grab; user-select: none; }
+.mapa svg.arrastrando { cursor: grabbing; }
 .cargando { color: var(--texto-3); padding: 40px; text-align: center; }
+.zoom-botones { display: flex; gap: 4px; }
+.zoom-botones .btn { min-width: 34px; font-size: 1rem; }
+.tabs-sectores { flex-wrap: wrap; }
+.tabs-sectores button { padding: 6px 10px; font-size: .86rem; }
+.referencia { margin-top: 8px; }
+.referencia-tip { color: var(--texto-3); font-size: .76rem; margin-left: auto; }
+.sw-inactivo { background: #f1f5f9; border-color: #cbd5e1; }
 
 /* zonas del plano (el SVG hereda estas reglas al estar inline) */
-.zona { stroke-width: 2; cursor: pointer; transition: opacity .15s, stroke-width .1s; fill: var(--libre); stroke: var(--libre-b); }
+.zona { stroke-width: 1.6; vector-effect: non-scaling-stroke; fill-opacity: .82; cursor: pointer; transition: opacity .15s; fill: var(--libre); stroke: var(--libre-b); }
+.zona[data-estado="inactivo"] { fill: #f1f5f9; stroke: #cbd5e1; }
 .zona[data-estado="libre"] { fill: var(--libre); stroke: var(--libre-b); }
 .zona[data-estado="aldia"] { fill: var(--aldia); stroke: var(--aldia-b); }
 .zona[data-estado="deuda"] { fill: var(--deuda); stroke: var(--deuda-b); }
 .zona[data-estado="refaccion"] { fill: url(#rayado); stroke: var(--refac-b); }
-.zona:hover { stroke-width: 4; }
-.zona.sel { stroke-width: 5; stroke: #0f172a; }
-.zona.atenuada, .etiqueta.atenuada, .badge-mant.atenuada { opacity: .18; }
+.zona:hover { stroke-width: 3; fill-opacity: 1; }
+.zona.sel { stroke-width: 3.5; stroke: #0f172a; fill-opacity: 1; }
+.zona.atenuada, .etiqueta.atenuada, .badge-mant.atenuada { opacity: .15; }
 .etiqueta { pointer-events: none; font-weight: 700; fill: #0f172a; }
 .etiqueta .sub { font-weight: 500; fill: #334155; }
 .badge-mant { pointer-events: none; }
-.badge-mant circle { fill: #fff; stroke: var(--mant); stroke-width: 2; }
+.badge-mant circle { fill: #fff; stroke: var(--mant); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.pill-inactivo { background: #f1f5f9; border-color: #cbd5e1; color: var(--texto-2); }
 
 /* ---------- ficha / paneles laterales ---------- */
 .ficha-fondo { position: fixed; inset: 0; background: rgba(15, 23, 42, .25); z-index: 30; }

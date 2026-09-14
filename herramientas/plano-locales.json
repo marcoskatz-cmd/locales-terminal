@@ -1,0 +1,2657 @@
+{
+ "fuente": "CONFORME A OBRA 2026.pdf",
+ "recorte": [
+  150.0,
+  250.0,
+  1510.0,
+  575.0
+ ],
+ "locales": [
+  {
+   "id_local": "L-406-404",
+   "etiqueta_plano": "406-404",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    249.0,
+    286.1,
+    38.5,
+    30.1
+   ],
+   "centro": [
+    268.0,
+    295.1
+   ]
+  },
+  {
+   "id_local": "L-409",
+   "etiqueta_plano": "409",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    209.8,
+    286.3,
+    12.1,
+    29.9
+   ],
+   "centro": [
+    216.0,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-408",
+   "etiqueta_plano": "408",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    222.8,
+    286.3,
+    12.2,
+    23.6
+   ],
+   "centro": [
+    228.8,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-407",
+   "etiqueta_plano": "407",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    235.9,
+    270.5,
+    12.2,
+    45.7
+   ],
+   "centro": [
+    242.1,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-403",
+   "etiqueta_plano": "403",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    288.4,
+    270.5,
+    12.2,
+    45.7
+   ],
+   "centro": [
+    295.0,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-402",
+   "etiqueta_plano": "402",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    301.4,
+    270.5,
+    12.2,
+    45.7
+   ],
+   "centro": [
+    307.8,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-401",
+   "etiqueta_plano": "401",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    314.5,
+    270.5,
+    12.7,
+    45.7
+   ],
+   "centro": [
+    320.8,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-400",
+   "etiqueta_plano": "400",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    328.1,
+    286.3,
+    13.2,
+    17.8
+   ],
+   "centro": [
+    334.4,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-399",
+   "etiqueta_plano": "399",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    342.2,
+    286.3,
+    11.2,
+    17.8
+   ],
+   "centro": [
+    347.7,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-398",
+   "etiqueta_plano": "398",
+   "nombre_en_plano": "",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    354.2,
+    286.3,
+    13.2,
+    17.8
+   ],
+   "centro": [
+    360.6,
+    295.3
+   ]
+  },
+  {
+   "id_local": "L-1A",
+   "etiqueta_plano": "1A",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    467.8,
+    306.7,
+    8.3,
+    12.2
+   ],
+   "centro": [
+    471.6,
+    311.4
+   ]
+  },
+  {
+   "id_local": "L-37-38",
+   "etiqueta_plano": "37-38",
+   "nombre_en_plano": "20 DE JUNIO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    996.4,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    1004.5,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-39-40",
+   "etiqueta_plano": "39-40",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1013.9,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    1022.2,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-41-42",
+   "etiqueta_plano": "41-42",
+   "nombre_en_plano": "14 BALUT",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1031.4,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    1039.7,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-43-44",
+   "etiqueta_plano": "43-44",
+   "nombre_en_plano": "SAN JUAN/MDQ",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1048.8,
+    306.7,
+    17.2,
+    12.2
+   ],
+   "centro": [
+    1057.7,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-45-46",
+   "etiqueta_plano": "45-46",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1066.3,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    1075.4,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-47-48",
+   "etiqueta_plano": "47-48",
+   "nombre_en_plano": "ANDESMAR",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1192.6,
+    308.6,
+    17.5,
+    17.8
+   ],
+   "centro": [
+    1201.9,
+    312.4
+   ]
+  },
+  {
+   "id_local": "L-49-50",
+   "etiqueta_plano": "49-50",
+   "nombre_en_plano": "VIA TAC",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1210.4,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1218.7,
+    312.5
+   ]
+  },
+  {
+   "id_local": "L-31",
+   "etiqueta_plano": "31",
+   "nombre_en_plano": "FONOBUS",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    858.7,
+    306.7,
+    8.4,
+    13.6
+   ],
+   "centro": [
+    863.1,
+    312.6
+   ]
+  },
+  {
+   "id_local": "L-55-58",
+   "etiqueta_plano": "55-58",
+   "nombre_en_plano": "POLICIA FEDERAL",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1262.9,
+    308.6,
+    34.6,
+    12.1
+   ],
+   "centro": [
+    1279.9,
+    312.6
+   ]
+  },
+  {
+   "id_local": "L-28-29",
+   "etiqueta_plano": "28-29",
+   "nombre_en_plano": "PLUSULTRA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    832.6,
+    306.7,
+    17.0,
+    19.2
+   ],
+   "centro": [
+    841.0,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-30",
+   "etiqueta_plano": "30",
+   "nombre_en_plano": "CATA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    850.1,
+    306.7,
+    8.3,
+    13.6
+   ],
+   "centro": [
+    854.3,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-32-33",
+   "etiqueta_plano": "32-33",
+   "nombre_en_plano": "SAN PEDRO",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    867.5,
+    306.7,
+    17.0,
+    13.6
+   ],
+   "centro": [
+    876.7,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-53-54",
+   "etiqueta_plano": "53-54",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1245.5,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1254.4,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-59-60",
+   "etiqueta_plano": "59-60",
+   "nombre_en_plano": "TRANSFER",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1297.9,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1306.4,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-61-62",
+   "etiqueta_plano": "61-62",
+   "nombre_en_plano": "VOSA",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1315.3,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1323.7,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-63-64",
+   "etiqueta_plano": "63-64",
+   "nombre_en_plano": "EXPREBUSS",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1332.8,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1341.2,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-65-66",
+   "etiqueta_plano": "65-66",
+   "nombre_en_plano": "ACONQUIJA",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1350.4,
+    308.6,
+    17.2,
+    12.1
+   ],
+   "centro": [
+    1359.1,
+    312.7
+   ]
+  },
+  {
+   "id_local": "L-1-2",
+   "etiqueta_plano": "1-2",
+   "nombre_en_plano": "BUSCOR SIMOQUEÑO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    476.4,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    484.8,
+    312.8
+   ]
+  },
+  {
+   "id_local": "L-3-4",
+   "etiqueta_plano": "3-4",
+   "nombre_en_plano": "RUTATUANTICA",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    493.9,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    501.7,
+    312.8
+   ]
+  },
+  {
+   "id_local": "L-6",
+   "etiqueta_plano": "6",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    520.2,
+    306.7,
+    8.3,
+    18.0
+   ],
+   "centro": [
+    525.1,
+    312.8
+   ]
+  },
+  {
+   "id_local": "L-27",
+   "etiqueta_plano": "27",
+   "nombre_en_plano": "VOSA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    823.8,
+    306.7,
+    8.3,
+    13.6
+   ],
+   "centro": [
+    827.8,
+    312.8
+   ]
+  },
+  {
+   "id_local": "L-34-36",
+   "etiqueta_plano": "34-36",
+   "nombre_en_plano": "CHEVALLIER",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    885.0,
+    306.7,
+    25.9,
+    13.6
+   ],
+   "centro": [
+    896.9,
+    312.8
+   ]
+  },
+  {
+   "id_local": "L-51-52",
+   "etiqueta_plano": "51-52",
+   "nombre_en_plano": "VIA BARI",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1228.0,
+    308.6,
+    17.0,
+    12.1
+   ],
+   "centro": [
+    1237.2,
+    313.0
+   ]
+  },
+  {
+   "id_local": "L-5",
+   "etiqueta_plano": "5",
+   "nombre_en_plano": "TRADIO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    511.4,
+    306.7,
+    8.3,
+    12.2
+   ],
+   "centro": [
+    516.6,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-7-8",
+   "etiqueta_plano": "7-8",
+   "nombre_en_plano": "LA UNION",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    528.8,
+    306.7,
+    17.0,
+    12.2
+   ],
+   "centro": [
+    536.3,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-9",
+   "etiqueta_plano": "9",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    546.4,
+    306.7,
+    8.3,
+    12.2
+   ],
+   "centro": [
+    551.8,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-10",
+   "etiqueta_plano": "10",
+   "nombre_en_plano": "20 DE JUNIO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    555.1,
+    306.7,
+    8.4,
+    12.2
+   ],
+   "centro": [
+    559.0,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-11-15",
+   "etiqueta_plano": "11-15",
+   "nombre_en_plano": "FLECHA BUS",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    649.1,
+    306.7,
+    43.3,
+    13.6
+   ],
+   "centro": [
+    670.2,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-16",
+   "etiqueta_plano": "16",
+   "nombre_en_plano": "URQUIZA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    692.9,
+    306.7,
+    8.2,
+    19.2
+   ],
+   "centro": [
+    696.8,
+    313.2
+   ]
+  },
+  {
+   "id_local": "L-17",
+   "etiqueta_plano": "17",
+   "nombre_en_plano": "LA UNION",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    701.5,
+    306.7,
+    8.3,
+    32.8
+   ],
+   "centro": [
+    705.5,
+    313.3
+   ]
+  },
+  {
+   "id_local": "L-18",
+   "etiqueta_plano": "18",
+   "nombre_en_plano": "VIA TAC",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    710.2,
+    306.7,
+    8.4,
+    13.6
+   ],
+   "centro": [
+    714.4,
+    313.3
+   ]
+  },
+  {
+   "id_local": "L-19-20",
+   "etiqueta_plano": "19-20",
+   "nombre_en_plano": "CRUCERO DEL SUR",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    718.9,
+    306.7,
+    17.0,
+    13.6
+   ],
+   "centro": [
+    727.0,
+    313.3
+   ]
+  },
+  {
+   "id_local": "L-24-26",
+   "etiqueta_plano": "24-26",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    797.8,
+    306.7,
+    25.6,
+    19.2
+   ],
+   "centro": [
+    811.0,
+    316.3
+   ]
+  },
+  {
+   "id_local": "L-21-23",
+   "etiqueta_plano": "21-23",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    736.4,
+    306.7,
+    25.8,
+    19.2
+   ],
+   "centro": [
+    749.9,
+    316.7
+   ]
+  },
+  {
+   "id_local": "L-20",
+   "etiqueta_plano": "20",
+   "nombre_en_plano": "PRACTICO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    626.2,
+    308.5,
+    16.2,
+    18.0
+   ],
+   "centro": [
+    637.2,
+    317.5
+   ]
+  },
+  {
+   "id_local": "L-397",
+   "etiqueta_plano": "397",
+   "nombre_en_plano": "MALETERÍA",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    350.4,
+    305.0,
+    16.9,
+    32.8
+   ],
+   "centro": [
+    358.3,
+    317.7
+   ]
+  },
+  {
+   "id_local": "L-67-68",
+   "etiqueta_plano": "67-68",
+   "nombre_en_plano": "VOSA",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1409.1,
+    309.6,
+    19.4,
+    25.1
+   ],
+   "centro": [
+    1420.1,
+    318.6
+   ]
+  },
+  {
+   "id_local": "L-1B",
+   "etiqueta_plano": "1B",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    459.0,
+    306.7,
+    8.2,
+    30.0
+   ],
+   "centro": [
+    463.2,
+    318.7
+   ]
+  },
+  {
+   "id_local": "L-532",
+   "etiqueta_plano": "532",
+   "nombre_en_plano": "EL SANTIAGUEÑO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    405.7,
+    306.7,
+    17.9,
+    30.0
+   ],
+   "centro": [
+    414.1,
+    319.1
+   ]
+  },
+  {
+   "id_local": "L-531",
+   "etiqueta_plano": "531",
+   "nombre_en_plano": "CRUCERO DEL SUR",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    424.0,
+    306.7,
+    17.0,
+    30.0
+   ],
+   "centro": [
+    433.7,
+    319.6
+   ]
+  },
+  {
+   "id_local": "L-530",
+   "etiqueta_plano": "530",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    441.5,
+    306.7,
+    17.0,
+    30.0
+   ],
+   "centro": [
+    450.8,
+    319.6
+   ]
+  },
+  {
+   "id_local": "L-34",
+   "etiqueta_plano": "34",
+   "nombre_en_plano": "EL CADILLAL",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    917.3,
+    310.6,
+    15.8,
+    18.0
+   ],
+   "centro": [
+    922.1,
+    319.6
+   ]
+  },
+  {
+   "id_local": "L-69-70",
+   "etiqueta_plano": "69-70",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1429.0,
+    312.1,
+    17.0,
+    15.6
+   ],
+   "centro": [
+    1437.6,
+    321.1
+   ]
+  },
+  {
+   "id_local": "L-71",
+   "etiqueta_plano": "71",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1446.5,
+    312.5,
+    8.3,
+    15.2
+   ],
+   "centro": [
+    1450.5,
+    321.5
+   ]
+  },
+  {
+   "id_local": "L-72",
+   "etiqueta_plano": "72",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1455.1,
+    312.5,
+    8.4,
+    15.2
+   ],
+   "centro": [
+    1459.0,
+    321.5
+   ]
+  },
+  {
+   "id_local": "L-73",
+   "etiqueta_plano": "73",
+   "nombre_en_plano": "MALEBO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1463.9,
+    312.5,
+    8.3,
+    22.2
+   ],
+   "centro": [
+    1467.9,
+    321.5
+   ]
+  },
+  {
+   "id_local": "L-74-75",
+   "etiqueta_plano": "74-75",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1472.6,
+    312.7,
+    17.0,
+    15.0
+   ],
+   "centro": [
+    1480.9,
+    321.7
+   ]
+  },
+  {
+   "id_local": "L-533",
+   "etiqueta_plano": "533",
+   "nombre_en_plano": "KIOSCO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1083.8,
+    304.8,
+    17.0,
+    31.9
+   ],
+   "centro": [
+    1091.3,
+    324.1
+   ]
+  },
+  {
+   "id_local": "L-534",
+   "etiqueta_plano": "534",
+   "nombre_en_plano": "MOLINO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1101.2,
+    304.8,
+    17.0,
+    31.9
+   ],
+   "centro": [
+    1109.3,
+    324.2
+   ]
+  },
+  {
+   "id_local": "L-76",
+   "etiqueta_plano": "76",
+   "nombre_en_plano": "TESA",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1490.2,
+    318.0,
+    21.5,
+    28.0
+   ],
+   "centro": [
+    1500.6,
+    327.0
+   ]
+  },
+  {
+   "id_local": "L-22",
+   "etiqueta_plano": "22",
+   "nombre_en_plano": "PANADERÍA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    646.9,
+    326.4,
+    19.2,
+    14.3
+   ],
+   "centro": [
+    657.9,
+    331.7
+   ]
+  },
+  {
+   "id_local": "L-33",
+   "etiqueta_plano": "33",
+   "nombre_en_plano": "NH LENCERIA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    893.8,
+    326.4,
+    20.5,
+    14.5
+   ],
+   "centro": [
+    903.3,
+    331.9
+   ]
+  },
+  {
+   "id_local": "L-301",
+   "etiqueta_plano": "301",
+   "nombre_en_plano": "TLEFONÍA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    666.5,
+    327.7,
+    17.0,
+    11.8
+   ],
+   "centro": [
+    676.1,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-302",
+   "etiqueta_plano": "302",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    684.0,
+    326.4,
+    17.0,
+    13.1
+   ],
+   "centro": [
+    692.7,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-303",
+   "etiqueta_plano": "303",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    701.5,
+    327.7,
+    17.0,
+    11.8
+   ],
+   "centro": [
+    710.5,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-304",
+   "etiqueta_plano": "304",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    718.9,
+    327.7,
+    17.0,
+    11.8
+   ],
+   "centro": [
+    727.7,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-305",
+   "etiqueta_plano": "305",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    823.8,
+    327.7,
+    17.0,
+    11.8
+   ],
+   "centro": [
+    832.9,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-308",
+   "etiqueta_plano": "308",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    876.2,
+    326.4,
+    17.0,
+    13.1
+   ],
+   "centro": [
+    885.3,
+    333.5
+   ]
+  },
+  {
+   "id_local": "L-77",
+   "etiqueta_plano": "77",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1402.0,
+    329.3,
+    17.8,
+    12.8
+   ],
+   "centro": [
+    1413.0,
+    335.2
+   ]
+  },
+  {
+   "id_local": "L-310",
+   "etiqueta_plano": "310",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1210.4,
+    326.9,
+    17.0,
+    14.8
+   ],
+   "centro": [
+    1218.8,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-311",
+   "etiqueta_plano": "311",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1228.0,
+    326.9,
+    17.0,
+    15.2
+   ],
+   "centro": [
+    1236.1,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-312",
+   "etiqueta_plano": "312",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1245.5,
+    326.9,
+    17.0,
+    15.2
+   ],
+   "centro": [
+    1254.7,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-313",
+   "etiqueta_plano": "313",
+   "nombre_en_plano": "SISTEMA",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1262.9,
+    333.0,
+    17.0,
+    9.1
+   ],
+   "centro": [
+    1270.4,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-314",
+   "etiqueta_plano": "314",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1280.4,
+    326.9,
+    17.0,
+    15.2
+   ],
+   "centro": [
+    1289.0,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-315",
+   "etiqueta_plano": "315",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1297.9,
+    326.9,
+    34.4,
+    15.2
+   ],
+   "centro": [
+    1313.5,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-316",
+   "etiqueta_plano": "316",
+   "nombre_en_plano": "",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    1332.8,
+    326.9,
+    35.2,
+    15.2
+   ],
+   "centro": [
+    1343.1,
+    335.4
+   ]
+  },
+  {
+   "id_local": "L-306-307",
+   "etiqueta_plano": "306-307",
+   "nombre_en_plano": "",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    841.3,
+    320.8,
+    34.4,
+    18.7
+   ],
+   "centro": [
+    856.4,
+    336.6
+   ]
+  },
+  {
+   "id_local": "L-528",
+   "etiqueta_plano": "528",
+   "nombre_en_plano": "ALFAJOR TUCUMÁN",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    580.0,
+    330.1,
+    18.7,
+    19.7
+   ],
+   "centro": [
+    587.7,
+    339.1
+   ]
+  },
+  {
+   "id_local": "L-26-27",
+   "etiqueta_plano": "26-27",
+   "nombre_en_plano": "RESTAURANTE",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    736.4,
+    307.8,
+    69.8,
+    55.8
+   ],
+   "centro": [
+    775.8,
+    339.1
+   ]
+  },
+  {
+   "id_local": "L-22_2",
+   "etiqueta_plano": "22",
+   "nombre_en_plano": "VIA NICOLINI",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    665.5,
+    340.0,
+    22.0,
+    16.3
+   ],
+   "centro": [
+    676.5,
+    347.3
+   ]
+  },
+  {
+   "id_local": "L-502-503",
+   "etiqueta_plano": "502-503",
+   "nombre_en_plano": "PANADERÍA YO HELADOS",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1191.4,
+    342.1,
+    36.1,
+    15.2
+   ],
+   "centro": [
+    1208.8,
+    348.4
+   ]
+  },
+  {
+   "id_local": "L-32",
+   "etiqueta_plano": "32",
+   "nombre_en_plano": "CATALEYA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    876.2,
+    340.0,
+    22.1,
+    18.5
+   ],
+   "centro": [
+    887.3,
+    349.4
+   ]
+  },
+  {
+   "id_local": "L-517A",
+   "etiqueta_plano": "517a",
+   "nombre_en_plano": "COMISIÓN DE CONTROL",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1472.6,
+    328.2,
+    17.0,
+    30.5
+   ],
+   "centro": [
+    1481.6,
+    349.7
+   ]
+  },
+  {
+   "id_local": "L-501",
+   "etiqueta_plano": "501",
+   "nombre_en_plano": "TITOS",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1101.2,
+    343.9,
+    53.4,
+    18.0
+   ],
+   "centro": [
+    1130.6,
+    352.9
+   ]
+  },
+  {
+   "id_local": "L-6-7",
+   "etiqueta_plano": "6-7",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    288.6,
+    344.0,
+    29.4,
+    18.0
+   ],
+   "centro": [
+    307.0,
+    353.0
+   ]
+  },
+  {
+   "id_local": "L-2-5",
+   "etiqueta_plano": "2-5",
+   "nombre_en_plano": "DEPÓSITO MANTENIMIENTO",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    246.2,
+    325.4,
+    41.9,
+    36.6
+   ],
+   "centro": [
+    257.2,
+    353.0
+   ]
+  },
+  {
+   "id_local": "L-10A&B",
+   "etiqueta_plano": "10a&b",
+   "nombre_en_plano": "COFFEE HOUSE",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    408.1,
+    337.1,
+    24.0,
+    25.6
+   ],
+   "centro": [
+    421.1,
+    353.6
+   ]
+  },
+  {
+   "id_local": "L-28",
+   "etiqueta_plano": "28",
+   "nombre_en_plano": "BUBA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    806.3,
+    346.7,
+    17.0,
+    16.3
+   ],
+   "centro": [
+    814.8,
+    354.0
+   ]
+  },
+  {
+   "id_local": "L-8",
+   "etiqueta_plano": "8",
+   "nombre_en_plano": "BURGER BOX",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    329.9,
+    346.4,
+    37.6,
+    16.9
+   ],
+   "centro": [
+    340.9,
+    354.3
+   ]
+  },
+  {
+   "id_local": "L-23-25",
+   "etiqueta_plano": "23 a 25",
+   "nombre_en_plano": "LA ARGENTINA",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    699.0,
+    340.0,
+    36.9,
+    24.5
+   ],
+   "centro": [
+    710.0,
+    355.4
+   ]
+  },
+  {
+   "id_local": "L-35",
+   "etiqueta_plano": "35",
+   "nombre_en_plano": "HAY UN LUGAR PARA VOS",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    936.8,
+    348.6,
+    20.2,
+    18.0
+   ],
+   "centro": [
+    947.8,
+    357.6
+   ]
+  },
+  {
+   "id_local": "L-29-31",
+   "etiqueta_plano": "29-31",
+   "nombre_en_plano": "DIVERTO STORE",
+   "sector": "B2",
+   "sector_nombre": "Block 2",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    823.8,
+    340.0,
+    52.0,
+    27.1
+   ],
+   "centro": [
+    850.3,
+    358.1
+   ]
+  },
+  {
+   "id_local": "L-517B",
+   "etiqueta_plano": "517b",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1490.2,
+    346.9,
+    18.7,
+    29.5
+   ],
+   "centro": [
+    1497.8,
+    359.0
+   ]
+  },
+  {
+   "id_local": "L-504",
+   "etiqueta_plano": "504",
+   "nombre_en_plano": "KIOSCO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1223.7,
+    342.6,
+    21.3,
+    28.7
+   ],
+   "centro": [
+    1234.7,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-505-506",
+   "etiqueta_plano": "505-506",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1245.5,
+    342.6,
+    34.4,
+    28.7
+   ],
+   "centro": [
+    1262.7,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-507",
+   "etiqueta_plano": "507",
+   "nombre_en_plano": "MAG DISTRIB.",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1280.4,
+    342.6,
+    17.0,
+    28.7
+   ],
+   "centro": [
+    1289.0,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-508",
+   "etiqueta_plano": "508",
+   "nombre_en_plano": "DEPÓSITO GOODIES",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1297.9,
+    342.6,
+    17.0,
+    28.7
+   ],
+   "centro": [
+    1306.1,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-509",
+   "etiqueta_plano": "509",
+   "nombre_en_plano": "CNRT",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1315.3,
+    342.6,
+    17.0,
+    28.7
+   ],
+   "centro": [
+    1323.5,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-510-511",
+   "etiqueta_plano": "510-511",
+   "nombre_en_plano": "ANDESMAR-CARGAS",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1332.8,
+    342.6,
+    35.2,
+    28.7
+   ],
+   "centro": [
+    1349.1,
+    362.3
+   ]
+  },
+  {
+   "id_local": "L-19",
+   "etiqueta_plano": "19",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    598.8,
+    355.4,
+    30.2,
+    18.0
+   ],
+   "centro": [
+    618.0,
+    364.4
+   ]
+  },
+  {
+   "id_local": "L-13",
+   "etiqueta_plano": "13",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    493.9,
+    354.1,
+    17.0,
+    45.2
+   ],
+   "centro": [
+    502.8,
+    367.6
+   ]
+  },
+  {
+   "id_local": "L-14-18",
+   "etiqueta_plano": "14-18",
+   "nombre_en_plano": "SPORTING",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    511.4,
+    350.3,
+    86.9,
+    49.1
+   ],
+   "centro": [
+    554.6,
+    367.9
+   ]
+  },
+  {
+   "id_local": "L-512",
+   "etiqueta_plano": "512",
+   "nombre_en_plano": "FLECHA CARGAS",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1368.0,
+    349.6,
+    51.8,
+    27.4
+   ],
+   "centro": [
+    1410.1,
+    367.9
+   ]
+  },
+  {
+   "id_local": "L-12",
+   "etiqueta_plano": "12",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    476.4,
+    337.1,
+    17.0,
+    62.3
+   ],
+   "centro": [
+    485.9,
+    368.0
+   ]
+  },
+  {
+   "id_local": "L-10C&11",
+   "etiqueta_plano": "10c & 11",
+   "nombre_en_plano": "DOGSY",
+   "sector": "B1",
+   "sector_nombre": "Block 1",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    446.2,
+    337.1,
+    29.8,
+    62.3
+   ],
+   "centro": [
+    457.2,
+    368.0
+   ]
+  },
+  {
+   "id_local": "L-514-515",
+   "etiqueta_plano": "514-515",
+   "nombre_en_plano": "VIA CARGO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1420.3,
+    357.0,
+    34.4,
+    20.0
+   ],
+   "centro": [
+    1437.2,
+    368.0
+   ]
+  },
+  {
+   "id_local": "L-516",
+   "etiqueta_plano": "516",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B4",
+   "sector_nombre": "Block 4",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1455.1,
+    357.0,
+    17.0,
+    20.0
+   ],
+   "centro": [
+    1463.5,
+    368.0
+   ]
+  },
+  {
+   "id_local": "L-41A",
+   "etiqueta_plano": "41a",
+   "nombre_en_plano": "LA TERMINAL NOVEDADES",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1048.8,
+    337.1,
+    52.1,
+    52.1
+   ],
+   "centro": [
+    1077.5,
+    368.5
+   ]
+  },
+  {
+   "id_local": "L-36",
+   "etiqueta_plano": "36",
+   "nombre_en_plano": "RINCÓN DE LUZ",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    961.4,
+    354.1,
+    17.0,
+    35.0
+   ],
+   "centro": [
+    971.1,
+    370.0
+   ]
+  },
+  {
+   "id_local": "L-37",
+   "etiqueta_plano": "37",
+   "nombre_en_plano": "TIMON",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    979.0,
+    354.1,
+    17.0,
+    45.2
+   ],
+   "centro": [
+    987.6,
+    370.0
+   ]
+  },
+  {
+   "id_local": "L-38",
+   "etiqueta_plano": "38",
+   "nombre_en_plano": "FELIPA",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    996.4,
+    354.1,
+    17.0,
+    45.2
+   ],
+   "centro": [
+    1005.2,
+    370.0
+   ]
+  },
+  {
+   "id_local": "L-39",
+   "etiqueta_plano": "39",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1013.9,
+    354.1,
+    17.0,
+    45.2
+   ],
+   "centro": [
+    1022.0,
+    370.0
+   ]
+  },
+  {
+   "id_local": "L-40",
+   "etiqueta_plano": "40",
+   "nombre_en_plano": "CENTRO DE ATENCIÓN (METROPO)",
+   "sector": "B3",
+   "sector_nombre": "Block 3",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1031.4,
+    354.1,
+    17.0,
+    45.2
+   ],
+   "centro": [
+    1040.8,
+    370.0
+   ]
+  },
+  {
+   "id_local": "L-535-536",
+   "etiqueta_plano": "535-536",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1245.5,
+    451.8,
+    34.4,
+    18.0
+   ],
+   "centro": [
+    1261.8,
+    460.8
+   ]
+  },
+  {
+   "id_local": "L-537-538",
+   "etiqueta_plano": "537-538",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1280.4,
+    451.8,
+    34.6,
+    18.0
+   ],
+   "centro": [
+    1297.4,
+    460.8
+   ]
+  },
+  {
+   "id_local": "L-522",
+   "etiqueta_plano": "522",
+   "nombre_en_plano": "VACÍO",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "LIBRE",
+   "caja": [
+    1350.4,
+    454.8,
+    17.0,
+    21.0
+   ],
+   "centro": [
+    1359.7,
+    463.8
+   ]
+  },
+  {
+   "id_local": "L-521",
+   "etiqueta_plano": "521",
+   "nombre_en_plano": "PRACTICO ENCOM.",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1367.8,
+    454.8,
+    17.0,
+    21.0
+   ],
+   "centro": [
+    1376.9,
+    463.8
+   ]
+  },
+  {
+   "id_local": "L-523-524",
+   "etiqueta_plano": "523-524",
+   "nombre_en_plano": "BANCO MACRO",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1214.1,
+    459.8,
+    30.9,
+    35.9
+   ],
+   "centro": [
+    1225.1,
+    468.8
+   ]
+  },
+  {
+   "id_local": "L-41B",
+   "etiqueta_plano": "41b",
+   "nombre_en_plano": "LA TERMINAL NOVEDADES",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1048.8,
+    435.7,
+    48.7,
+    52.4
+   ],
+   "centro": [
+    1086.5,
+    470.0
+   ]
+  },
+  {
+   "id_local": "L-539-540",
+   "etiqueta_plano": "539-540",
+   "nombre_en_plano": "DEPÓSITO MANTENIMIENTO",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1315.3,
+    461.0,
+    34.6,
+    40.9
+   ],
+   "centro": [
+    1332.8,
+    470.0
+   ]
+  },
+  {
+   "id_local": "L-520",
+   "etiqueta_plano": "520",
+   "nombre_en_plano": "MD CARGAS",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1385.3,
+    461.2,
+    17.0,
+    29.6
+   ],
+   "centro": [
+    1394.5,
+    470.2
+   ]
+  },
+  {
+   "id_local": "L-519",
+   "etiqueta_plano": "519",
+   "nombre_en_plano": "EL CORCEL",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1402.8,
+    461.2,
+    17.0,
+    30.1
+   ],
+   "centro": [
+    1412.0,
+    470.2
+   ]
+  },
+  {
+   "id_local": "L-518D",
+   "etiqueta_plano": "518d",
+   "nombre_en_plano": "CRUCERO EXPRESS",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1420.2,
+    461.2,
+    18.0,
+    30.1
+   ],
+   "centro": [
+    1430.9,
+    470.2
+   ]
+  },
+  {
+   "id_local": "L-518C",
+   "etiqueta_plano": "518c",
+   "nombre_en_plano": "UTA",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1438.6,
+    457.4,
+    17.4,
+    33.8
+   ],
+   "centro": [
+    1448.9,
+    470.2
+   ]
+  },
+  {
+   "id_local": "L-65",
+   "etiqueta_plano": "65",
+   "nombre_en_plano": "GOODIES",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    476.4,
+    461.3,
+    17.0,
+    26.9
+   ],
+   "centro": [
+    485.9,
+    470.3
+   ]
+  },
+  {
+   "id_local": "L-43A",
+   "etiqueta_plano": "43a",
+   "nombre_en_plano": "RANIA STORE",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    996.4,
+    454.9,
+    34.4,
+    33.2
+   ],
+   "centro": [
+    1010.7,
+    472.8
+   ]
+  },
+  {
+   "id_local": "L-42",
+   "etiqueta_plano": "42",
+   "nombre_en_plano": "BARBE SHOP",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1031.3,
+    463.9,
+    17.0,
+    33.5
+   ],
+   "centro": [
+    1040.8,
+    472.9
+   ]
+  },
+  {
+   "id_local": "L-68-69",
+   "etiqueta_plano": "68-69",
+   "nombre_en_plano": "EL JARDÍN",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    417.3,
+    465.1,
+    23.7,
+    18.7
+   ],
+   "centro": [
+    428.3,
+    474.1
+   ]
+  },
+  {
+   "id_local": "L-66-67",
+   "etiqueta_plano": "66-67",
+   "nombre_en_plano": "LA CUEVA",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    441.5,
+    454.1,
+    34.6,
+    33.5
+   ],
+   "centro": [
+    459.0,
+    478.6
+   ]
+  },
+  {
+   "id_local": "L-62",
+   "etiqueta_plano": "62",
+   "nombre_en_plano": "AJWENCHEY",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    528.7,
+    455.3,
+    17.2,
+    38.4
+   ],
+   "centro": [
+    538.1,
+    484.7
+   ]
+  },
+  {
+   "id_local": "L-75B&A-74B&A",
+   "etiqueta_plano": "75b&a - 74b&a",
+   "nombre_en_plano": "BUBA",
+   "sector": "B8",
+   "sector_nombre": "Block 8",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    253.5,
+    477.1,
+    43.4,
+    18.0
+   ],
+   "centro": [
+    264.5,
+    486.1
+   ]
+  },
+  {
+   "id_local": "L-525",
+   "etiqueta_plano": "525",
+   "nombre_en_plano": "GRANDIET",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1118.6,
+    480.2,
+    36.0,
+    23.2
+   ],
+   "centro": [
+    1137.3,
+    489.2
+   ]
+  },
+  {
+   "id_local": "L-53-44",
+   "etiqueta_plano": "53 a 44",
+   "nombre_en_plano": "CASINO",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    844.5,
+    482.3,
+    43.1,
+    18.0
+   ],
+   "centro": [
+    855.5,
+    491.3
+   ]
+  },
+  {
+   "id_local": "L-61",
+   "etiqueta_plano": "61",
+   "nombre_en_plano": "VER",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    546.4,
+    485.5,
+    52.0,
+    18.0
+   ],
+   "centro": [
+    571.2,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-60",
+   "etiqueta_plano": "60",
+   "nombre_en_plano": "PLAN B",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    598.8,
+    485.5,
+    24.6,
+    18.0
+   ],
+   "centro": [
+    611.3,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-59",
+   "etiqueta_plano": "59",
+   "nombre_en_plano": "CHEEKY",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    623.9,
+    485.5,
+    18.1,
+    35.5
+   ],
+   "centro": [
+    633.2,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-58",
+   "etiqueta_plano": "58",
+   "nombre_en_plano": "NUEVA GENTE",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    642.5,
+    485.5,
+    25.8,
+    18.0
+   ],
+   "centro": [
+    655.7,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-56-57",
+   "etiqueta_plano": "56-57",
+   "nombre_en_plano": "MACOWENS",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    668.6,
+    485.5,
+    34.6,
+    18.0
+   ],
+   "centro": [
+    685.7,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-54-55",
+   "etiqueta_plano": "54-55",
+   "nombre_en_plano": "SOMMIER CENTER",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    703.7,
+    485.5,
+    42.2,
+    18.0
+   ],
+   "centro": [
+    723.8,
+    494.5
+   ]
+  },
+  {
+   "id_local": "L-518B",
+   "etiqueta_plano": "518b",
+   "nombre_en_plano": "GENDARM.",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1438.6,
+    492.2,
+    17.4,
+    17.4
+   ],
+   "centro": [
+    1447.6,
+    499.4
+   ]
+  },
+  {
+   "id_local": "L-43B",
+   "etiqueta_plano": "43b",
+   "nombre_en_plano": "MODA PUNTO",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    996.4,
+    488.6,
+    34.4,
+    38.6
+   ],
+   "centro": [
+    1010.7,
+    505.7
+   ]
+  },
+  {
+   "id_local": "L-542",
+   "etiqueta_plano": "542",
+   "nombre_en_plano": "MAG DISTRIBUCIONES",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1191.6,
+    496.2,
+    53.4,
+    20.6
+   ],
+   "centro": [
+    1219.0,
+    506.4
+   ]
+  },
+  {
+   "id_local": "L-518A",
+   "etiqueta_plano": "518a",
+   "nombre_en_plano": "DESTAC. POLICIAL",
+   "sector": "B5",
+   "sector_nombre": "Block 5",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1420.2,
+    492.2,
+    18.0,
+    34.6
+   ],
+   "centro": [
+    1429.4,
+    508.0
+   ]
+  },
+  {
+   "id_local": "L-526&541",
+   "etiqueta_plano": "526 & 541",
+   "nombre_en_plano": "FARMACIA",
+   "sector": "B6",
+   "sector_nombre": "Block 6",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    1083.7,
+    488.6,
+    70.9,
+    38.2
+   ],
+   "centro": [
+    1117.2,
+    511.0
+   ]
+  },
+  {
+   "id_local": "L-64",
+   "etiqueta_plano": "64",
+   "nombre_en_plano": "LA CUEVA (VACIO)",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "ALQUILADO",
+   "caja": [
+    441.5,
+    523.2,
+    51.7,
+    24.5
+   ],
+   "centro": [
+    469.6,
+    533.3
+   ]
+  },
+  {
+   "id_local": "L-529",
+   "etiqueta_plano": "529",
+   "nombre_en_plano": "",
+   "sector": "B7",
+   "sector_nombre": "Block 7",
+   "estado_deducido": "A CONFIRMAR",
+   "caja": [
+    623.9,
+    521.6,
+    18.1,
+    25.0
+   ],
+   "centro": [
+    633.1,
+    534.4
+   ]
+  }
+ ]
+}

@@ -51,6 +51,13 @@ Colores elegidos para visión rojo-verde: sin rojo ni verde puro, siempre con et
 - **v1**: mapa multi-planta, ficha (resumen, contrato, pagos, mantenimiento, historial), dashboard, buscador y filtros, alertas (vencimiento 30/60/90, ajuste ≤30 días, mora, fallas ALTA), historial de cambios, ayuda integrada, diagnóstico de esquema.
 - **v2**: fotos en fallas, generación automática mensual de cuotas por trigger, avisos por mail, exportar PDF, importación de cobranzas desde la planilla existente, PIN por persona.
 
+## Actualización 2026-09-14: plano real
+
+- El edificio es **una sola planta** (el PDF "CONFORME A OBRA 2026" trae toda la terminal en una página). En vez de plantas, la navegación es por **sectores** Block 1 a 8, con zoom del mapa: cada sector es una vista calculada a partir de las cajas de sus locales. La estructura multi-planta queda disponible pero oculta si hay una sola.
+- El plano se integra como **PNG de fondo (200 dpi, recorte de la franja de locales) + `<rect>` por local** en coordenadas del PDF. Las cajas se detectaron lanzando rayos desde cada etiqueta numérica hasta la primera pared vectorial. 147 locales: 98 con inquilino en el plano, 26 rotulados VACÍO, 23 sin rótulo (series 300 y 400).
+- La carga inicial de datos pasa por la **planilla de relevamiento Excel** (`docs/`), prellenada desde el plano y con los mismos desplegables que la app. `generar-datos.py` la convierte y valida (columnas, coherencia local ↔ contrato). Los contratos sin fechas o monto entran como VIGENTE con observación `INCOMPLETO` y la app los marca "Contrato incompleto" hasta que se completen.
+- Nuevo estado visual **uso interno** (`activo = false`, columna `se_alquila = NO`): depósitos, organismos. Quedan en el mapa en gris claro y no cuentan para ocupación ni deuda.
+
 ## Puntos de reemplazo
 
 1. `planos/planta-baja.svg` y `planos/planta-alta.svg` → plano real, un elemento con `id="L-XX"` por local.
