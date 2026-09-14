@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Locales · Terminal INGECO</title>
 <meta name="theme-color" content="#0f172a">
-<link rel="stylesheet" href="styles.css?v=20260914c">
+<link rel="stylesheet" href="styles.css?v=20260914d">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
     <input id="input-pin" type="password" inputmode="numeric" autocomplete="off" required>
     <button type="submit" class="btn btn-primario">Entrar</button>
     <p id="pin-error" class="error" hidden></p>
-    <p class="nota-pin" id="pin-nota" hidden>Modo demostración · PIN <code>1234</code></p>
+    <p class="nota-pin" id="pin-nota" hidden>Sin conexión con Google · PIN provisorio <code>1234</code></p>
   </form>
 </div>
 
@@ -41,7 +41,7 @@
   </header>
 
   <div id="banner-demo" class="banner banner-demo" hidden>
-    <strong>Modo demostración.</strong> Estos datos son ficticios y los cambios se guardan solo en esta pestaña. Al recargar vuelven los datos de ejemplo.
+    <strong>Sin conexión con la planilla de Google.</strong> Los datos son los del relevamiento (planillas de alquileres y cobranzas), pero lo que cargues acá se guarda solo en esta pestaña hasta que se conecte el backend.
   </div>
   <div id="banner-diagnostico" class="banner banner-alerta" hidden></div>
 
@@ -123,9 +123,9 @@
 </div>
 
 <!-- El parámetro ?v= evita que el navegador (o GitHub Pages) sirva una versión vieja tras un deploy. Subirlo con cada cambio. -->
-<script src="config.js?v=20260914c"></script>
-<script src="backend/Reglas.js?v=20260914c"></script>
-<script src="api.js?v=20260914c"></script>
-<script src="app.js?v=20260914c"></script>
+<script src="config.js?v=20260914d"></script>
+<script src="backend/Reglas.js?v=20260914d"></script>
+<script src="api.js?v=20260914d"></script>
+<script src="app.js?v=20260914d"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 const CONFIG = {
   // URL del deployment de Apps Script (termina en /exec).
   // Vacío = modo demostración: lee mock/datos.json y los cambios viven solo en esta pestaña.
-  API_URL: '',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwzkDwZyq2TfONn8pU7k4wmicCGSp7xWNueG4TouFFjqqungnDI1Z7IRnLX4qP9yq5n/exec',
 
   // PIN que acepta el modo demostración. En modo API el PIN lo valida el servidor.
   MOCK_PIN: '1234',

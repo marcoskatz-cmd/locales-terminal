@@ -84,6 +84,7 @@ var API = (function () {
     guardarContrato: function (p) { return post('guardarContrato', p); },
     generarCuotas: function (p) { return post('generarCuotas', p); },
     registrarPago: function (p) { return post('registrarPago', p); },
+    anularCuota: function (p) { return post('anularCuota', p); },
     guardarMantenimiento: function (p) { return post('guardarMantenimiento', p); },
   };
 })();

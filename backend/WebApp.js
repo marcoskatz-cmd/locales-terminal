@@ -35,6 +35,7 @@ function doPost(e) {
     var ahora = new Date();
     var ctx = { usuario: usuario, hoy: REGLAS.hoyISO(ahora), ahora: REGLAS.ahoraISO(ahora) };
     var resultado = REGLAS.ejecutar(accion, d, body.datos || {}, ctx);
+    (resultado.borrados || []).forEach(function (b) { borrarFila_(ss, b.hoja, b.id); });
     resultado.upserts.forEach(function (u) { upsertFila_(ss, u.hoja, u.fila); });
     agregarHistorial_(ss, resultado.historial);
     SpreadsheetApp.flush();

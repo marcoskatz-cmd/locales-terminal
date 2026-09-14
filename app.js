@@ -486,7 +486,9 @@
         var saldo = REGLAS.saldoCuota(D, q); var vencida = q.estado !== 'PAGADA' && q.vencimiento < HOY;
         var pill = q.estado === 'PAGADA' ? 'pill-aldia' : vencida ? 'pill-deuda' : 'pill-gris';
         var txt = q.estado === 'PAGADA' ? 'Pagada' : vencida ? (q.estado === 'PARCIAL' ? 'Parcial · vencida' : 'Vencida') : (q.estado === 'PARCIAL' ? 'Parcial' : 'Vence ' + fmtFecha(q.vencimiento));
-        return '<tr' + (q.estado !== 'PAGADA' ? ' class="fila-click" data-accion="registrar-pago" data-cuota="' + q.id_cuota + '" title="Registrar pago de esta cuota"' : '') + '><td>' + fmtPeriodo(q.periodo) + '</td><td>' + q.concepto.charAt(0) + q.concepto.slice(1).toLowerCase() + '</td><td class="num">' + fmtMonto(q.monto) + '</td><td class="num">' + (saldo ? fmtMonto(saldo) : '—') + '</td><td><span class="pill ' + pill + '">' + txt + '</span></td></tr>';
+        var sinPagos = !D.pagos.some(function (p) { return p.id_cuota === q.id_cuota; });
+        return '<tr' + (q.estado !== 'PAGADA' ? ' class="fila-click" data-accion="registrar-pago" data-cuota="' + q.id_cuota + '" title="Registrar pago de esta cuota"' : '') + '><td>' + fmtPeriodo(q.periodo) + '</td><td>' + q.concepto.charAt(0) + q.concepto.slice(1).toLowerCase() + '</td><td class="num">' + fmtMonto(q.monto) + '</td><td class="num">' + (saldo ? fmtMonto(saldo) : '—') + '</td><td><span class="pill ' + pill + '">' + txt + '</span>' +
+          (sinPagos ? ' <button class="btn btn-chico" data-accion="anular-cuota" data-cuota="' + q.id_cuota + '" title="Anular esta cuota (se generó por error). Solo se puede si no tiene pagos.">Anular</button>' : '') + '</td></tr>';
       }).join('') + '</table></div>';
     }
     h += '</div>';
@@ -542,6 +544,7 @@
         if (a === 'editar-contrato') formContrato(l, D.contratos.filter(function (c) { return c.id_contrato === b.dataset.id; })[0]);
         if (a === 'cerrar-contrato') formCerrarContrato(l, D.contratos.filter(function (c) { return c.id_contrato === b.dataset.id; })[0]);
         if (a === 'registrar-pago') formPago(l, b.dataset.cuota || '');
+        if (a === 'anular-cuota') formAnularCuota(l, b.dataset.cuota);
         if (a === 'nueva-falla') formMant(l, null);
         if (a === 'editar-mant') formMant(l, D.mantenimiento.filter(function (m) { return m.id_mant === b.dataset.id; })[0]);
       };
@@ -634,6 +637,14 @@
     s.onchange = sync; sync();
   }
 
+  function formAnularCuota(l, idCuota) {
+    var q = D.cuotas.filter(function (x) { return x.id_cuota === idCuota; })[0]; if (!q) return;
+    abrirModal('Anular cuota · ' + l.nombre,
+      '<div class="confirm aviso">Se va a anular la cuota de <strong>' + q.concepto.toLowerCase() + ' ' + fmtPeriodo(q.periodo) + '</strong> por <strong>' + fmtMonto(q.monto) + '</strong>. Solo corresponde si se generó por error (por ejemplo, un mes anterior al inicio del contrato). Queda registrado en el historial.</div>' +
+      campo('Motivo', inp('motivo', '', 'required placeholder="Ej.: el contrato arrancó en junio"'), true),
+      function (fd) { fd.id_cuota = idCuota; return API.anularCuota(fd); }, 'Anular cuota');
+  }
+
   function formMant(l, m) {
     var esNueva = !m; m = m || { prioridad: 'MEDIA', estado: 'PENDIENTE', fecha_reporte: HOY, tipo_falla: D.listas.tipos_falla[0] };
     abrirModal(esNueva ? 'Reportar falla · ' + l.nombre : 'Falla ' + m.id_mant + ' · ' + l.nombre,
@@ -681,7 +692,7 @@
       '<p>Arriba del plano están los <strong>sectores</strong> (Block 1 a 8): al elegir uno el mapa hace zoom ahí y la lista de la izquierda muestra solo esos locales. También podés acercar con la rueda del mouse (o dos dedos en el celular), arrastrar para moverte y volver a la vista del sector con ⌂.</p>' +
       '<h3>La ficha</h3><p>Hacé click en un local (en el plano o en la lista de la izquierda) y se abre su ficha con cinco pestañas: Resumen, Contrato, Pagos, Mantenimiento e Historial. Desde ahí se edita todo.</p>' +
       '<h3>Qué se carga a mano y qué no</h3><ul><li>El estado <strong>ALQUILADO</strong> lo pone la app sola cuando cargás un contrato, y lo saca cuando lo finalizás. No se puede forzar.</li><li>La <strong>deuda</strong> se calcula con las cuotas vencidas sin pagar. Para que un local figure al día, registrá el pago.</li><li>Lo único que marcás vos es <strong>LIBRE</strong> o <strong>EN REFACCIÓN</strong> (botón Editar en Resumen).</li></ul>' +
-      '<h3>Todos los meses</h3><p>Apretá <strong>+ Cuotas del mes</strong>. Crea la cuota de alquiler y la de expensas de cada contrato vigente, con vencimiento el 10. Si ya estaban, no las duplica.</p>' +
+      '<h3>Todos los meses</h3><p>Apretá <strong>+ Cuotas del mes</strong>. Crea la cuota de alquiler (y la de expensas si el contrato las tiene) de cada contrato vigente, con vencimiento el 10. Si ya estaban, no las duplica. Ojo: genera para <em>todos</em> los contratos vigentes, incluidos los que están en gestión judicial. Si alguna cuota no corresponde, en la pestaña Pagos del local tenés <strong>Anular</strong> (solo mientras no tenga pagos).</p>' +
       '<h3>Registrar un pago</h3><p>Ficha → Pagos → <strong>+ Registrar pago</strong>, o click directo en la fila de la cuota. El monto viene precargado con el saldo; bajalo si es un pago parcial.</p>' +
       '<h3>Mantenimiento</h3><p>Ficha → Mantenimiento → <strong>+ Reportar falla</strong>. Cuando se resuelve, actualizala a RESUELTO indicando quién intervino y el costo si lo hubo.</p>' +
       '<h3>Alertas 🔔</h3><p>Contratos que vencen en 30/60/90 días, ajustes de alquiler próximos, locales en mora y fallas de prioridad ALTA. Click en una alerta te lleva al local.</p>' +

@@ -44,13 +44,13 @@ var REGLAS = (function () {
   function esPeriodo(v) { return /^\d{4}-(0[1-9]|1[0-2])$/.test(v); }
 
   function siguienteId(filas, campo, prefijo) {
-    var max = 0;
+    var max = 0, ancho = 3;
     filas.forEach(function (f) {
       var m = String(f[campo] || '').match(new RegExp('^' + prefijo + '-(\\d+)$'));
-      if (m) max = Math.max(max, parseInt(m[1], 10));
+      if (m) { max = Math.max(max, parseInt(m[1], 10)); ancho = Math.max(ancho, m[1].length); }   // respeta el ancho ya usado (Q-0406 → Q-0407)
     });
     var n = String(max + 1);
-    while (n.length < (prefijo === 'L' ? 2 : 3)) n = '0' + n;
+    while (n.length < ancho) n = '0' + n;
     return prefijo + '-' + n;
   }
 
@@ -193,6 +193,17 @@ var REGLAS = (function () {
       mensaje: q2.estado === 'PAGADA' ? 'Pago registrado. La cuota quedó PAGADA.' : 'Pago parcial registrado. Saldo: $' + (saldo - monto) + '.' };
   }
 
+  // Anular una cuota generada por error. Solo si no tiene pagos imputados (si los tiene, primero hay que resolver eso).
+  function anularCuota(datos, p, ctx) {
+    var cuota = buscar(datos, 'CUOTAS', txt(p.id_cuota));
+    if (!cuota) throw new Error('No existe la cuota ' + p.id_cuota + '.');
+    var conPagos = datos.pagos.some(function (pg) { return pg.id_cuota === cuota.id_cuota; });
+    if (conPagos) throw new Error('La cuota ' + cuota.id_cuota + ' tiene pagos imputados: no se puede anular.');
+    return { upserts: [], borrados: [{ hoja: 'CUOTAS', id: cuota.id_cuota }],
+      historial: [{ fecha: ctx.ahora, usuario: ctx.usuario, entidad: 'CUOTAS', id: cuota.id_cuota, campo: '(anulada)', valor_anterior: cuota.id_local + ' · ' + cuota.concepto + ' ' + cuota.periodo + ' · $' + cuota.monto, valor_nuevo: txt(p.motivo) }],
+      mensaje: 'Cuota anulada.' };
+  }
+
   // ---------- MANTENIMIENTO ----------
   var CAMPOS_MANT = ['id_local', 'planta', 'fecha_reporte', 'tipo_falla', 'descripcion', 'prioridad', 'estado', 'quien_intervino', 'fecha_resolucion', 'costo', 'fotos', 'observaciones'];
   function guardarMantenimiento(datos, p, ctx) {
@@ -221,6 +232,10 @@ var REGLAS = (function () {
 
   // Aplica un resultado sobre `datos` en memoria (lo usa el modo demo y el backend antes de responder)
   function aplicar(datos, resultado) {
+    (resultado.borrados || []).forEach(function (b) {
+      var key = HOJA_A_KEY[b.hoja], clave = CLAVES[b.hoja];
+      datos[key] = datos[key].filter(function (f) { return f[clave] !== b.id; });
+    });
     resultado.upserts.forEach(function (u) {
       var key = HOJA_A_KEY[u.hoja], clave = CLAVES[u.hoja], arr = datos[key];
       var idx = -1;
@@ -231,7 +246,7 @@ var REGLAS = (function () {
     return datos;
   }
 
-  var ACCIONES = { guardarLocal: guardarLocal, guardarContrato: guardarContrato, generarCuotas: generarCuotas, registrarPago: registrarPago, guardarMantenimiento: guardarMantenimiento };
+  var ACCIONES = { guardarLocal: guardarLocal, guardarContrato: guardarContrato, generarCuotas: generarCuotas, registrarPago: registrarPago, anularCuota: anularCuota, guardarMantenimiento: guardarMantenimiento };
 
   return {
     CLAVES: CLAVES, HOJA_A_KEY: HOJA_A_KEY, ACCIONES: ACCIONES,

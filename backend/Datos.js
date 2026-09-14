@@ -72,6 +72,17 @@ function upsertFila_(ss, hoja, fila) {
   return numFila;
 }
 
+// Borra la fila cuya columna clave vale `id`. Devuelve true si la encontró.
+function borrarFila_(ss, hoja, id) {
+  var r = leerHoja_(ss, hoja);
+  if (!r.hoja) throw new Error('No existe la hoja ' + hoja + ' en la planilla.');
+  var clave = REGLAS.CLAVES[hoja];
+  var fila = r.filas.filter(function (f) { return f[clave] === id; })[0];
+  if (!fila) return false;
+  r.hoja.deleteRow(fila._fila);
+  return true;
+}
+
 function agregarHistorial_(ss, entradas) {
   if (!entradas || !entradas.length) return;
   var r = leerHoja_(ss, 'HISTORIAL');
