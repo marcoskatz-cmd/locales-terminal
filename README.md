@@ -12,7 +12,8 @@ Gestión de locales comerciales: mapa en planta con zoom por sector, ficha por l
 - **Unidades reales** (sep-2026): ~200, tomadas de la planilla "Alquileres Terminal" (boleterías, locales, depósitos, góndolas del hall, oficinas de planta alta, encomiendas, predio norte), con superficie, rubro, precio acordado y notas. No todas están en el plano: góndolas, oficinas y predio aparecen solo en la lista.
 - **Cobranzas mayo–agosto 2026** cargadas como cuotas (total del mes, "todo concepto") y pagos (transferencia / efectivo / cheque / retención, con fecha). La deuda que muestra la app sale de ahí.
 - Lo que falta de los contratos (fechas de inicio y fin, CUIT, depósito, índice) no está en ninguna fuente: la app los marca "Contrato incompleto" hasta que se completen en la planilla.
-- `CONFIG.API_URL` en [config.js](config.js) está vacío: la app corre en modo demostración (lee `mock/datos.json`, PIN `1234`).
+- **En producción desde el 14-sep-2026**: `CONFIG.API_URL` apunta al deployment de Apps Script y los datos viven en la planilla de Google "Locales Terminal - Datos" (Drive de Marcos). PIN provisorio `1234` (cambiar con `cambiarPin('xxxx')` desde el editor del script). `mock/datos.json` queda solo como respaldo del modo sin conexión (vaciar `API_URL` para usarlo).
+- Redeploy del backend: `cd backend && clasp push --force && clasp create-deployment -i <deploymentId> -d "vN - descripción"` (misma URL). El `deploymentId` es el que figura en `CONFIG.API_URL`.
 
 ## Flujo de datos
 
@@ -34,7 +35,7 @@ mock/datos.json (modo demo)  +  backend/MockData.js (semilla de setupApp)
 - Ids de unidad: categoría + número (`BOL-1-2`, `LOC-501`, `GON-3`, `OFI-7`, `DEP-305`, `ENC-512`, `COB-…` para las que solo aparecen en cobranzas). El número solo no alcanza: hay un 9 boletería, un 9 local y un 9 góndola.
 - Una unidad puede ocupar varias zonas del plano (`zonas_plano = L-41A;L-41B`) o ninguna.
 
-## Pasar a producción (una sola vez)
+## Cómo se pasó a producción (referencia; ya hecho)
 
 1. **Backend**
    ```bash
