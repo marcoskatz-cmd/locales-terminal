@@ -251,7 +251,9 @@
     var punteros = {}, arrastre = null, pinch = null, movio = false;
     svg.addEventListener('wheel', function (e) { e.preventDefault(); zoomEn(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX, e.clientY); }, { passive: false });
     svg.addEventListener('pointerdown', function (e) {
-      punteros[e.pointerId] = { x: e.clientX, y: e.clientY }; svg.setPointerCapture(e.pointerId); movio = false;
+      // OJO: no capturar el puntero acá. Con captura, el click llega al <svg> y no al local: la ficha no se abre.
+      // La captura se toma recién cuando hay arrastre real (ver pointermove).
+      punteros[e.pointerId] = { x: e.clientX, y: e.clientY }; movio = false;
       var ids = Object.keys(punteros);
       if (ids.length === 1) arrastre = { x: e.clientX, y: e.clientY, vb: svg._vb.slice() };
       else if (ids.length === 2) { var a = punteros[ids[0]], b = punteros[ids[1]]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), vb: svg._vb.slice(), cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 }; arrastre = null; }
@@ -263,13 +265,17 @@
       if (pinch) {
         var ids = Object.keys(punteros); if (ids.length < 2) return;
         var a = punteros[ids[0]], b = punteros[ids[1]], d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (!movio) { Object.keys(punteros).forEach(function (id) { try { svg.setPointerCapture(Number(id)); } catch (err) { } }); }
         var f = Math.max(0.2, Math.min(5, d / pinch.d)); var vb = pinch.vb;
         var fx = (pinch.cx - r.left) / r.width, fy = (pinch.cy - r.top) / r.height, nw = vb[2] / f, nh = vb[3] / f;
         setViewBox([vb[0] + (vb[2] - nw) * fx, vb[1] + (vb[3] - nh) * fy, nw, nh]); movio = true; return;
       }
       if (arrastre) {
         var dx = (e.clientX - arrastre.x) * (arrastre.vb[2] / r.width), dy = (e.clientY - arrastre.y) * (arrastre.vb[3] / r.height);
-        if (Math.abs(e.clientX - arrastre.x) + Math.abs(e.clientY - arrastre.y) > 4) { movio = true; svg.classList.add('arrastrando'); }
+        if (Math.abs(e.clientX - arrastre.x) + Math.abs(e.clientY - arrastre.y) > 4) {
+          if (!movio) { try { svg.setPointerCapture(e.pointerId); } catch (err) { } }
+          movio = true; svg.classList.add('arrastrando');
+        }
         setViewBox([arrastre.vb[0] - dx, arrastre.vb[1] - dy, arrastre.vb[2], arrastre.vb[3]]);
       }
     });
