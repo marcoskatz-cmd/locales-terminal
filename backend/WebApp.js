@@ -57,6 +57,16 @@ function doPost(e) {
       return responder_({ ok: true, totalMs: Date.now() - t0, pasos: pasos });
     }
 
+    // Cambiar el PIN de acceso. Solo se llega acá con el PIN actual válido.
+    if (accion === 'cambiarPin') {
+      var nuevoPin = String(body.datos && body.datos.nuevo || '').trim();
+      if (!/^\d{4,8}$/.test(nuevoPin)) return responder_({ ok: false, error: 'El PIN nuevo tiene que tener entre 4 y 8 dígitos.' });
+      if (nuevoPin === String(prop_('APP_PIN', false))) return responder_({ ok: false, error: 'Es el mismo PIN que ya está.' });
+      PropertiesService.getScriptProperties().setProperty('APP_PIN', nuevoPin);
+      agregarHistorial_(ss, [{ fecha: REGLAS.ahoraISO(new Date()), usuario: usuario, entidad: 'SISTEMA', id: 'PIN', campo: 'pin', valor_anterior: '****', valor_nuevo: '**** (cambiado)' }]);
+      return responder_({ ok: true, mensaje: 'PIN actualizado.' });
+    }
+
     if (!REGLAS.ACCIONES[accion]) return responder_({ ok: false, error: 'Acción desconocida: ' + accion });
 
     // Idempotencia: si el cliente reintenta una mutación ya procesada (porque se perdió la respuesta),
