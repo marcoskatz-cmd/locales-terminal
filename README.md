@@ -15,7 +15,14 @@ Gestión de locales comerciales: mapa en planta con zoom por sector, ficha por l
 - **En producción desde el 14-sep-2026**: `CONFIG.API_URL` apunta al deployment de Apps Script y los datos viven en la planilla de Google "Locales Terminal - Datos" (Drive de Marcos). PIN provisorio `1234` (cambiar con `cambiarPin('xxxx')` desde el editor del script). `mock/datos.json` queda solo como respaldo del modo sin conexión (vaciar `API_URL` para usarlo).
 - Redeploy del backend: `cd backend && clasp push --force && clasp create-deployment -i <deploymentId> -d "vN - descripción"` (misma URL). El `deploymentId` es el que figura en `CONFIG.API_URL`.
 
-## Flujo de datos
+## Dónde viven los datos
+
+La base de datos es la planilla de Google **"Locales Terminal - Datos"** (Drive de Marcos): https://docs.google.com/spreadsheets/d/1QT6X6IXUNZ0njYiKJlUgCzV0Y_yWr8LyHnjO1hMkiRg/edit
+La app la lee al abrir y con ↻, y escribe ahí cada pago, falla o contrato. También se puede editar la planilla a mano (usar los desplegables, no tocar encabezados ni `id_local`; fechas como dd/mm/aaaa o AAAA-MM-DD): la app lo ve al tocar ↻ o a los 10 minutos (caché del servidor). El Excel de `docs/` fue solo la carga inicial.
+
+Rendimiento: el backend cachea los datos comprimidos (gzip+base64) 10 minutos y los devuelve comprimidos (~35 KB); cada guardado actualiza esa caché sin releer la planilla. El frontend guarda una copia local para abrir al instante, serializa las llamadas y reintenta con clave de idempotencia (`_op`) si Google devuelve una página de error en vez de JSON (pasa con varias respuestas grandes simultáneas y 1–2 min después de cada redeploy).
+
+## Flujo de datos (carga inicial, ya hecha)
 
 ```
 CONFORME A OBRA 2026.pdf                                   Alquileres Terminal.xlsx + COBRANZAS mayo-Agosto.xlsx

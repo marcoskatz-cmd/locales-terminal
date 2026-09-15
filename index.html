@@ -2,17 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Locales · Terminal INGECO</title>
 <meta name="theme-color" content="#0f172a">
-<link rel="stylesheet" href="styles.css?v=20260914d">
+<link rel="stylesheet" href="styles.css?v=20260915c">
 </head>
 <body>
 
 <!-- ================= PIN ================= -->
 <div id="pantalla-pin" class="pantalla-pin">
   <form id="form-pin" class="caja-pin" autocomplete="off">
-    <div class="marca-pin">Locales</div>
+    <div class="marca-pin"><span class="logo">▦</span> Locales</div>
     <div class="sub-pin" id="pin-edificio"></div>
     <label for="input-pin">PIN de acceso</label>
     <input id="input-pin" type="password" inputmode="numeric" autocomplete="off" required>
@@ -33,65 +33,84 @@
       </div>
     </div>
     <div class="topbar-acciones">
-      <button class="btn btn-sec" id="btn-cuotas" title="Crea las cuotas de alquiler y expensas del mes para todos los contratos vigentes">+ Cuotas del mes</button>
-      <button class="btn btn-sec" id="btn-alertas" title="Alertas">🔔 <span class="contador" id="alertas-num" hidden></span></button>
-      <button class="btn btn-sec" id="btn-ayuda" title="Cómo se usa">? Ayuda</button>
-      <button class="btn btn-fantasma" id="btn-salir" title="Cerrar sesión">Salir</button>
+      <button class="btn btn-sec btn-sync" id="btn-actualizar" title="Volver a leer la planilla de Google"><span class="icono">↻</span><span class="sync-texto" id="sync-estado"></span></button>
+      <button class="btn btn-sec solo-pc" id="btn-planilla" title="Abrir la planilla de Google donde viven los datos" hidden>📗 Planilla</button>
+      <button class="btn btn-sec solo-pc" id="btn-cuotas" title="Crea las cuotas del mes para todos los contratos vigentes">+ Cuotas del mes</button>
+      <button class="btn btn-sec" id="btn-alertas" title="Alertas">🔔<span class="contador" id="alertas-num" hidden></span></button>
+      <button class="btn btn-sec solo-pc" id="btn-ayuda" title="Cómo se usa">? Ayuda</button>
+      <button class="btn btn-fantasma solo-pc" id="btn-salir" title="Cerrar sesión">Salir</button>
     </div>
   </header>
 
   <div id="banner-demo" class="banner banner-demo" hidden>
-    <strong>Sin conexión con la planilla de Google.</strong> Los datos son los del relevamiento (planillas de alquileres y cobranzas), pero lo que cargues acá se guarda solo en esta pestaña hasta que se conecte el backend.
+    <strong>Sin conexión con la planilla de Google.</strong> Los datos son los del relevamiento, pero lo que cargues acá se guarda solo en esta pestaña.
   </div>
   <div id="banner-diagnostico" class="banner banner-alerta" hidden></div>
 
-  <section class="kpis" id="kpis"></section>
+  <section class="kpis" id="kpis" aria-label="Resumen del edificio"></section>
 
-  <main class="layout">
-    <aside class="lateral">
-      <input id="buscador" class="buscador" type="search" placeholder="Buscar local, inquilino, rubro…">
-      <select id="filtro-categoria" class="buscador" hidden></select>
-      <div class="chips" id="filtros"></div>
+  <main class="layout" id="layout" data-vista="mapa">
+    <aside class="lateral" id="vista-lista">
+      <div class="lateral-cabecera">
+        <input id="buscador" class="buscador" type="search" placeholder="Buscar por número, inquilino o rubro…" autocomplete="off">
+        <select id="filtro-categoria" class="buscador" hidden></select>
+        <div class="chips" id="filtros"></div>
+        <div class="lista-resumen" id="lista-resumen"></div>
+      </div>
       <ul class="lista-locales" id="lista-locales"></ul>
     </aside>
 
-    <section class="mapa-wrap">
+    <section class="mapa-wrap" id="vista-mapa">
       <div class="mapa-cabecera">
         <div class="tabs" id="plantas-tabs" hidden></div>
         <div class="tabs tabs-sectores" id="sectores-tabs"></div>
         <div class="zoom-botones">
-          <button class="btn btn-chico" id="zoom-menos" title="Alejar">−</button>
-          <button class="btn btn-chico" id="zoom-mas" title="Acercar">+</button>
-          <button class="btn btn-chico" id="zoom-reset" title="Volver a la vista del sector">⌂</button>
+          <button class="btn btn-chico" id="zoom-menos" title="Alejar" aria-label="Alejar">−</button>
+          <button class="btn btn-chico" id="zoom-mas" title="Acercar" aria-label="Acercar">+</button>
+          <button class="btn btn-chico" id="zoom-reset" title="Volver a la vista del sector" aria-label="Centrar">⌂</button>
         </div>
       </div>
-      <div class="mapa" id="mapa"><div class="cargando">Cargando plano…</div></div>
-      <div class="referencia">
-        <span><i class="sw sw-libre"></i>Libre</span>
-        <span><i class="sw sw-aldia"></i>Al día</span>
-        <span><i class="sw sw-deuda"></i>Con deuda</span>
-        <span><i class="sw sw-refaccion"></i>Refacción</span>
-        <span><i class="sw sw-judicial"></i>Judicial</span>
-        <span><i class="sw sw-inactivo"></i>Uso interno</span>
-        <span><i class="sw sw-sindatos"></i>Sin unidad</span>
-        <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
-        <span class="referencia-tip">Rueda del mouse o dos dedos para acercar · arrastrar para mover</span>
-      </div>
+      <div class="mapa" id="mapa"><div class="cargando"><span class="spinner"></span>Cargando plano…</div></div>
+      <details class="referencia-caja" id="referencia" open>
+        <summary>Referencias</summary>
+        <div class="referencia">
+          <span><i class="sw sw-libre"></i>Libre</span>
+          <span><i class="sw sw-aldia"></i>Al día</span>
+          <span><i class="sw sw-deuda"></i>Con deuda</span>
+          <span><i class="sw sw-refaccion"></i>Refacción</span>
+          <span><i class="sw sw-judicial"></i>Judicial</span>
+          <span><i class="sw sw-inactivo"></i>Uso interno</span>
+          <span><i class="sw sw-sindatos"></i>Sin unidad</span>
+          <span><i class="sw sw-mant">🔧</i>Mant. pendiente</span>
+          <span class="referencia-tip solo-pc">Rueda del mouse o doble click para acercar · arrastrar para mover · click en un local abre su ficha</span>
+          <span class="referencia-tip solo-movil">Dos dedos para acercar · arrastrar para mover · tocá un local para abrir su ficha</span>
+        </div>
+      </details>
     </section>
   </main>
+
+  <!-- ================= BARRA INFERIOR (celular) ================= -->
+  <nav class="nav-movil" id="nav-movil" aria-label="Secciones">
+    <button data-vista="mapa" class="activa"><span class="nav-ico">🗺️</span>Mapa</button>
+    <button data-vista="lista"><span class="nav-ico">☰</span>Lista</button>
+    <button data-vista="alertas"><span class="nav-ico">🔔</span>Alertas<span class="contador" id="alertas-num-movil" hidden></span></button>
+    <button data-vista="mas"><span class="nav-ico">⋯</span>Más</button>
+  </nav>
 
   <!-- ================= FICHA ================= -->
   <div id="ficha-fondo" class="ficha-fondo" hidden></div>
   <aside id="ficha" class="ficha" hidden aria-label="Ficha del local">
     <div class="ficha-cabecera">
-      <div>
+      <button class="btn-volver solo-movil" id="ficha-volver" aria-label="Volver">‹</button>
+      <div class="ficha-titulos">
         <div class="ficha-id" id="ficha-id"></div>
         <div class="ficha-titulo" id="ficha-titulo"></div>
         <div class="ficha-sub" id="ficha-sub"></div>
       </div>
-      <button class="btn-cerrar" id="ficha-cerrar" title="Cerrar">✕</button>
+      <button class="btn-cerrar solo-pc" id="ficha-cerrar" title="Cerrar (Esc)">✕</button>
     </div>
     <div class="ficha-estado" id="ficha-estado"></div>
+    <div class="ficha-acciones" id="ficha-acciones"></div>
     <div class="tabs tabs-ficha" id="ficha-tabs">
       <button data-tab="resumen" class="activa">Resumen</button>
       <button data-tab="contrato">Contrato</button>
@@ -105,8 +124,9 @@
   <!-- ================= PANEL ALERTAS ================= -->
   <aside id="panel-alertas" class="ficha" hidden aria-label="Alertas">
     <div class="ficha-cabecera">
-      <div><div class="ficha-titulo">Alertas</div><div class="ficha-sub">Vencimientos, ajustes, mora y fallas urgentes</div></div>
-      <button class="btn-cerrar" id="alertas-cerrar" title="Cerrar">✕</button>
+      <button class="btn-volver solo-movil" id="alertas-volver" aria-label="Volver">‹</button>
+      <div class="ficha-titulos"><div class="ficha-titulo">Alertas</div><div class="ficha-sub">Vencimientos, ajustes, mora y fallas urgentes</div></div>
+      <button class="btn-cerrar solo-pc" id="alertas-cerrar" title="Cerrar">✕</button>
     </div>
     <div class="ficha-cuerpo" id="alertas-cuerpo"></div>
   </aside>
@@ -114,18 +134,19 @@
   <!-- ================= MODAL ================= -->
   <div id="modal" class="modal" hidden>
     <div class="modal-caja" role="dialog" aria-modal="true">
-      <div class="modal-cabecera"><div class="modal-titulo" id="modal-titulo"></div><button class="btn-cerrar" id="modal-cerrar">✕</button></div>
+      <div class="modal-cabecera"><div class="modal-titulo" id="modal-titulo"></div><button class="btn-cerrar" id="modal-cerrar" aria-label="Cerrar">✕</button></div>
       <form id="modal-form" class="formulario" autocomplete="off"></form>
     </div>
   </div>
 
+  <div id="cargando-datos" class="cargando-datos" hidden><span class="spinner"></span><span id="cargando-texto">Leyendo la planilla de Google…</span></div>
   <div id="toast" class="toast" hidden></div>
 </div>
 
 <!-- El parámetro ?v= evita que el navegador (o GitHub Pages) sirva una versión vieja tras un deploy. Subirlo con cada cambio. -->
-<script src="config.js?v=20260914d"></script>
-<script src="backend/Reglas.js?v=20260914d"></script>
-<script src="api.js?v=20260914d"></script>
-<script src="app.js?v=20260914d"></script>
+<script src="config.js?v=20260915c"></script>
+<script src="backend/Reglas.js?v=20260915c"></script>
+<script src="api.js?v=20260915c"></script>
+<script src="app.js?v=20260915c"></script>
 </body>
 </html>

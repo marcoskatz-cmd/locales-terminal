@@ -17,10 +17,26 @@
   var textoBusqueda = '';
   var svgCache = {};
   var zonaALocal = {};          // id de zona del SVG -> id_local (una unidad puede tener varias zonas)
+  var resumenCache = {};        // resumenLocal() por id, se vacía cada vez que cambian los datos
+  var vistaMovil = 'mapa';      // 'mapa' | 'lista' (en celular se ve una por vez)
+  var iniciando = false;
+  var CLAVE_CACHE = 'locales_datos_v1';
+  var planillaUrl = '';         // enlace a la planilla de Google (lo manda el backend en cargarTodo)
+
+  function recordarPlanilla(resp) {
+    if (resp && resp.planillaUrl) { planillaUrl = resp.planillaUrl; try { localStorage.setItem('locales_planilla_url', planillaUrl); } catch (e) { } }
+    var b = $('btn-planilla'); if (b) b.hidden = !planillaUrl;
+  }
+
+  function invalidar() { resumenCache = {}; }
+  function setDatos(nuevos) { D = nuevos; invalidar(); if (!API.modoDemo) { try { localStorage.setItem(CLAVE_CACHE, JSON.stringify({ t: Date.now(), datos: nuevos })); } catch (e) { } } }
+  function leerCache() { if (API.modoDemo) return null; try { var c = JSON.parse(localStorage.getItem(CLAVE_CACHE) || 'null'); return c && c.datos && c.datos.locales ? c : null; } catch (e) { return null; } }
+  function esMovil() { return window.matchMedia('(max-width: 900px)').matches; }
 
   function zonasDe(l) { return String(l.zonas || '').split(';').map(function (z) { return z.trim(); }).filter(Boolean); }
   function reindexarZonas() {
     zonaALocal = {};
+    if (!D) return;
     D.locales.forEach(function (l) { zonasDe(l).forEach(function (z) { zonaALocal[z] = l.id_local; }); });
     // Compatibilidad: si una unidad no declara zonas pero existe una zona con su mismo id, se usa
     D.locales.forEach(function (l) { if (!zonasDe(l).length && !zonaALocal[l.id_local]) zonaALocal[l.id_local] = l.id_local; });
@@ -51,6 +67,10 @@
 
   // ---------- cálculo de estado (nunca se carga a mano) ----------
   function resumenLocal(l) {
+    if (resumenCache[l.id_local]) return resumenCache[l.id_local];
+    var r = calcularResumen(l); resumenCache[l.id_local] = r; return r;
+  }
+  function calcularResumen(l) {
     var vig = REGLAS.contratoVigente(D, l.id_local);
     var cuotas = D.cuotas.filter(function (q) { return q.id_local === l.id_local; });
     var deuda = { ALQUILER: { meses: 0, monto: 0 }, EXPENSAS: { meses: 0, monto: 0 } };
@@ -78,6 +98,7 @@
       if (sectorActual !== 'TODO' && x.l.sector !== sectorActual) return false;
       if (filtroCategoria && x.l.categoria !== filtroCategoria) return false;
       if (filtroEstado === 'mant' && !x.r.mantPend.length) return false;
+      if (filtroEstado === 'incompleto' && !x.r.contratoIncompleto) return false;
       if (['libre', 'aldia', 'deuda', 'refaccion', 'judicial', 'inactivo'].indexOf(filtroEstado) >= 0 && x.r.estadoVisual !== filtroEstado) return false;
       if (t) {
         var blob = [x.l.id_local, x.l.nombre, x.l.rubro, x.l.sector, x.l.categoria, x.l.zonas, x.r.contrato ? x.r.contrato.inquilino : ''].join(' ').toLowerCase();
@@ -116,54 +137,75 @@
     renderSectores();
     pintarMapa();
     var n = calcularAlertas().total;
-    $('alertas-num').textContent = n; $('alertas-num').hidden = !n;
+    ['alertas-num', 'alertas-num-movil'].forEach(function (id) { var el = $(id); if (el) { el.textContent = n; el.hidden = !n; } });
     if (localSel) renderFicha();
   }
 
+  function renderKpisEsqueleto() {
+    $('kpis').innerHTML = ['Ocupación', 'm² alquilados', 'Unidades libres', 'Deuda total', 'Mant. pendiente'].map(function (t) { return '<div class="kpi esqueleto"><div class="kpi-label">' + t + '</div><div class="kpi-valor">00000</div><div class="kpi-sub">cargando…</div></div>'; }).join('');
+  }
   function renderKpis() {
     var act = D.locales.filter(function (l) { return l.activo !== false; });
-    var m2Tot = 0, m2Alq = 0, alq = 0, jud = 0, deuda = 0, deudaLoc = 0, mant = 0, libres = 0;
+    var m2Tot = 0, m2Alq = 0, alq = 0, jud = 0, deuda = 0, deudaLoc = 0, mant = 0, libres = 0, incompletos = 0;
     act.forEach(function (l) {
       var r = resumenLocal(l); m2Tot += REGLAS.num(l.m2);
       if (l.estado === 'ALQUILADO') { alq++; m2Alq += REGLAS.num(l.m2); }
       if (l.estado === 'JUDICIAL') { jud++; m2Alq += REGLAS.num(l.m2); }
       if (l.estado === 'LIBRE') libres++;
       if (r.totalDeuda > 0) { deuda += r.totalDeuda; deudaLoc++; }
+      if (r.contratoIncompleto) incompletos++;
     });
     mant = D.mantenimiento.filter(function (m) { return m.estado !== 'RESUELTO'; }).length;
     var pct = act.length ? Math.round((alq + jud) / act.length * 100) : 0;
     $('kpis').innerHTML =
-      kpi('Ocupación', pct + '%', (alq + jud) + ' de ' + act.length + ' unidades' + (jud ? ' · ' + jud + ' en gestión judicial' : ''), 'kpi-ok') +
-      (m2Tot ? kpi('m² alquilados', m2Alq.toLocaleString('es-AR'), 'de ' + m2Tot.toLocaleString('es-AR') + ' m² · libres: ' + (m2Tot - m2Alq).toLocaleString('es-AR'), '')
-        : kpi('m² alquilados', '—', 'falta cargar superficies', '')) +
-      kpi('Unidades libres', libres, libres === 1 ? 'disponible' : 'disponibles', '') +
-      kpi('Deuda total', fmtMonto(deuda), deudaLoc + (deudaLoc === 1 ? ' unidad con deuda' : ' unidades con deuda'), 'kpi-deuda') +
-      kpi('Mant. pendiente', mant, mant === 1 ? 'trabajo abierto' : 'trabajos abiertos', 'kpi-mant');
+      kpi('Ocupación', pct + '%', (alq + jud) + ' de ' + act.length + ' unidades' + (jud ? ' · ' + jud + ' judicial' : ''), 'kpi-ok', 'todos') +
+      kpi('Unidades libres', libres, libres === 1 ? 'disponible' : 'disponibles', '', 'libre') +
+      kpi('Deuda total', fmtMonto(deuda), deudaLoc + (deudaLoc === 1 ? ' unidad con deuda' : ' unidades con deuda'), 'kpi-deuda', 'deuda') +
+      kpi('Mant. pendiente', mant, mant === 1 ? 'trabajo abierto' : 'trabajos abiertos', 'kpi-mant', 'mant') +
+      (incompletos ? kpi('Contratos a completar', incompletos, 'sin fechas o monto', 'kpi-incompleto', 'incompleto') : '') +
+      (m2Tot ? kpi('m² alquilados', m2Alq.toLocaleString('es-AR', { maximumFractionDigits: 0 }), 'de ' + m2Tot.toLocaleString('es-AR', { maximumFractionDigits: 0 }) + ' m² · libres ' + (m2Tot - m2Alq).toLocaleString('es-AR', { maximumFractionDigits: 0 }), '', '')
+        : kpi('m² alquilados', '—', 'falta cargar superficies', '', ''));
+    $('kpis').querySelectorAll('.kpi.clickeable').forEach(function (k) {
+      k.onclick = function () {
+        filtroEstado = k.dataset.filtro; filtroCategoria = '';
+        renderKpis(); renderFiltros(); renderLista(); pintarMapa();
+        if (esMovil()) setVista('lista');
+      };
+    });
   }
-  function kpi(label, valor, sub, cls) { return '<div class="kpi ' + cls + '"><div class="kpi-label">' + label + '</div><div class="kpi-valor">' + valor + '</div><div class="kpi-sub">' + sub + '</div></div>'; }
+  function kpi(label, valor, sub, cls, filtro) {
+    var click = filtro !== '' && filtro !== undefined;
+    return '<button type="button" class="kpi ' + cls + (click ? ' clickeable' : '') + (click && filtroEstado === filtro && filtro !== 'todos' ? ' activo' : '') + '"' + (click ? ' data-filtro="' + filtro + '" title="Ver estas unidades en la lista"' : ' tabindex="-1"') + '><div class="kpi-label">' + label + '</div><div class="kpi-valor">' + valor + '</div><div class="kpi-sub">' + sub + '</div></button>';
+  }
 
   function renderFiltros() {
-    var cnt = { todos: 0, libre: 0, aldia: 0, deuda: 0, refaccion: 0, judicial: 0, inactivo: 0, mant: 0 };
+    var cnt = { todos: 0, libre: 0, aldia: 0, deuda: 0, refaccion: 0, judicial: 0, inactivo: 0, mant: 0, incompleto: 0 };
     D.locales.forEach(function (l) {
       if (sectorActual !== 'TODO' && l.sector !== sectorActual) return;
       if (filtroCategoria && l.categoria !== filtroCategoria) return;
-      var r = resumenLocal(l); cnt.todos++; cnt[r.estadoVisual] = (cnt[r.estadoVisual] || 0) + 1; if (r.mantPend.length) cnt.mant++;
+      var r = resumenLocal(l); cnt.todos++; cnt[r.estadoVisual] = (cnt[r.estadoVisual] || 0) + 1; if (r.mantPend.length) cnt.mant++; if (r.contratoIncompleto) cnt.incompleto++;
     });
-    var defs = [['todos', 'Todos'], ['libre', 'Libres'], ['aldia', 'Al día'], ['deuda', 'Con deuda'], ['refaccion', 'Refacción'], ['mant', 'Con mant.']];
+    var defs = [['todos', 'Todos'], ['libre', 'Libres'], ['aldia', 'Al día'], ['deuda', 'Con deuda']];
+    if (cnt.refaccion) defs.push(['refaccion', 'Refacción']);
+    if (cnt.mant) defs.push(['mant', 'Con mant.']);
     if (cnt.judicial) defs.push(['judicial', 'Judicial']);
+    if (cnt.incompleto) defs.push(['incompleto', 'Contrato a completar']);
     if (cnt.inactivo) defs.push(['inactivo', 'Uso interno']);
+    if (!defs.some(function (d) { return d[0] === filtroEstado; })) filtroEstado = 'todos';
     // Selector de categoría (boletería / local / góndola / oficina...)
     var cats = (D.listas.categorias || []).filter(function (c) { return D.locales.some(function (l) { return l.categoria === c; }); });
     var sel = $('filtro-categoria');
     if (sel && cats.length) { sel.hidden = false; sel.innerHTML = '<option value="">Todas las categorías</option>' + opciones(cats, filtroCategoria); sel.onchange = function () { filtroCategoria = sel.value; renderFiltros(); renderLista(); pintarMapa(); }; }
     else if (sel) sel.hidden = true;
     $('filtros').innerHTML = defs.map(function (d) { return '<button class="chip' + (filtroEstado === d[0] ? ' activo' : '') + '" data-f="' + d[0] + '">' + d[1] + '<span class="n">' + cnt[d[0]] + '</span></button>'; }).join('');
-    $('filtros').querySelectorAll('.chip').forEach(function (b) { b.onclick = function () { filtroEstado = b.dataset.f; renderFiltros(); renderLista(); pintarMapa(); }; });
+    $('filtros').querySelectorAll('.chip').forEach(function (b) { b.onclick = function () { filtroEstado = b.dataset.f; renderKpis(); renderFiltros(); renderLista(); pintarMapa(); }; });
   }
 
   function renderLista() {
     var items = localesFiltrados();
-    if (!items.length) { $('lista-locales').innerHTML = '<div class="lista-vacia">Ningún local coincide con el filtro.</div>'; return; }
+    var res = $('lista-resumen');
+    if (res) res.textContent = items.length + (items.length === 1 ? ' unidad' : ' unidades') + (sectorActual !== 'TODO' ? ' en ' + sectorActual : '') + (filtroCategoria ? ' · ' + filtroCategoria : '') + (filtroEstado !== 'todos' ? ' · filtro activo' : '');
+    if (!items.length) { $('lista-locales').innerHTML = '<div class="lista-vacia">Ninguna unidad coincide.<br><button class="btn btn-chico" id="btn-limpiar-filtros" style="margin-top:8px">Quitar filtros</button></div>'; var bl = $('btn-limpiar-filtros'); if (bl) bl.onclick = function () { filtroEstado = 'todos'; filtroCategoria = ''; textoBusqueda = ''; $('buscador').value = ''; if (sectorActual !== 'TODO') cambiarSector('TODO'); else { renderKpis(); renderFiltros(); renderLista(); pintarMapa(); } }; return; }
     $('lista-locales').innerHTML = items.map(function (x) {
       var det = x.r.estadoVisual === 'inactivo' ? (x.r.contrato ? x.r.contrato.inquilino : (x.l.rubro || 'Uso interno'))
         : x.r.contrato ? x.r.contrato.inquilino : (x.l.estado === 'REFACCION' ? 'En refacción' : 'Libre' + (REGLAS.num(x.l.m2) ? ' · ' + x.l.m2 + ' m²' : ''));
@@ -172,7 +214,7 @@
       var donde = sectorActual === 'TODO' ? (x.l.sector || nombrePlanta(x.l.planta)) : '';
       return '<li data-id="' + x.l.id_local + '" class="' + (localSel === x.l.id_local ? 'sel' : '') + '">' +
         '<span class="punto sw-' + x.r.estadoVisual + '"></span>' +
-        '<div><div class="nom">' + esc(x.l.nombre) + (donde ? ' <span style="color:var(--texto-3);font-weight:400">· ' + esc(donde) + '</span>' : '') + '</div><div class="det">' + esc(det) + '</div></div>' +
+        '<div><div class="nom">' + esc(x.l.nombre) + (donde ? ' <span class="cat">· ' + esc(donde) + '</span>' : '') + '</div><div class="det">' + esc(det) + '</div></div>' +
         '<div class="tag">' + tag + (x.r.mantPend.length && x.r.totalDeuda > 0 ? '<br>🔧 ' + x.r.mantPend.length : '') + '</div></li>';
     }).join('');
     $('lista-locales').querySelectorAll('li').forEach(function (li) { li.onclick = function () { abrirFicha(li.dataset.id, null, false); }; });
@@ -202,8 +244,28 @@
       secs.map(function (s) { return '<button data-s="' + esc(s.id) + '" class="' + (sectorActual === s.id ? 'activa' : '') + '">' + esc(s.id) + ' <span style="opacity:.6">' + s.n + '</span></button>'; }).join('');
     cont.querySelectorAll('button').forEach(function (b) { b.onclick = function () { cambiarSector(b.dataset.s); }; });
   }
+  // Vista de una sola unidad: sus zonas con margen, pero nunca más chica que un pedazo reconocible del plano
+  function cajaLocal(l) {
+    var svg = $('mapa').querySelector('svg'); if (!svg || !vistaBase) return null;
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, n = 0;
+    (zonasDe(l).length ? zonasDe(l) : [l.id_local]).forEach(function (idz) {
+      var z = svg.getElementById(idz); if (!z) return;
+      var bb = z.getBBox(); n++;
+      x0 = Math.min(x0, bb.x); y0 = Math.min(y0, bb.y); x1 = Math.max(x1, bb.x + bb.width); y1 = Math.max(y1, bb.y + bb.height);
+    });
+    if (!n) return null;
+    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, w = Math.max(x1 - x0, 90), h = Math.max(y1 - y0, 60);
+    return ajustarAspecto([cx - w * 0.75, cy - h * 0.75, w * 1.5, h * 1.5]);
+  }
+  function enfocarLocal(l) {
+    var vb = cajaLocal(l);
+    if (!vb) { toast('Esta unidad no está dibujada en el plano.'); return false; }
+    if (l.sector && sectorActual !== l.sector && sectorActual !== 'TODO') { sectorActual = l.sector; renderSectores(); renderFiltros(); renderLista(); }
+    setViewBox(vb); pintarMapa();
+    return true;
+  }
   function cajaSector(sector) {
-    var svg = $('mapa').querySelector('svg'); if (!svg || !vistaBase) return vistaBase;
+    var svg = $('mapa').querySelector('svg'); if (!svg || !vistaBase || !D) return vistaBase;
     if (sector === 'TODO') return vistaBase.slice();
     var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, n = 0;
     D.locales.forEach(function (l) {
@@ -250,6 +312,7 @@
   function activarPanZoom(svg) {
     var punteros = {}, arrastre = null, pinch = null, movio = false;
     svg.addEventListener('wheel', function (e) { e.preventDefault(); zoomEn(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX, e.clientY); }, { passive: false });
+    svg.addEventListener('dblclick', function (e) { e.preventDefault(); zoomEn(1.8, e.clientX, e.clientY); });
     svg.addEventListener('pointerdown', function (e) {
       // OJO: no capturar el puntero acá. Con captura, el click llega al <svg> y no al local: la ficha no se abre.
       // La captura se toma recién cuando hay arrastre real (ver pointermove).
@@ -393,9 +456,23 @@
     if (l && l.planta !== plantaActual && tienePlano(l.planta)) { await cambiarPlanta(l.planta); }
     if (l && !desdeMapa && l.sector && sectorActual !== l.sector && tienePlano(l.planta)) cambiarSector(l.sector);
     $('ficha').hidden = false; $('ficha-fondo').hidden = false; $('panel-alertas').hidden = true;
+    $('ficha-cuerpo').scrollTop = 0;
     renderFicha(); renderLista(); pintarMapa();
   }
   function cerrarFicha() { localSel = null; $('ficha').hidden = true; $('ficha-fondo').hidden = true; renderLista(); pintarMapa(); }
+
+  // Botonera de acciones rápidas de la ficha: lo que más se hace, sin buscar la pestaña
+  function renderAccionesFicha(l, r) {
+    var abiertas = D.cuotas.some(function (q) { return q.id_local === l.id_local && q.estado !== 'PAGADA'; });
+    var h = '';
+    if (abiertas) h += '<button class="btn btn-primario" data-accion="registrar-pago">💲 Registrar pago</button>';
+    if (!r.contrato && l.activo !== false) h += '<button class="btn btn-primario" data-accion="nuevo-contrato">＋ Cargar contrato</button>';
+    if (r.contratoIncompleto) h += '<button class="btn" data-accion="editar-contrato" data-id="' + r.contrato.id_contrato + '">✎ Completar contrato</button>';
+    h += '<button class="btn" data-accion="nueva-falla">🔧 Reportar falla</button>';
+    if (tienePlano(l.planta) && (zonasDe(l).length || $('mapa').querySelector('svg') && $('mapa').querySelector('svg').getElementById(l.id_local))) h += '<button class="btn" data-accion="ver-plano">📍 Ver en el plano</button>';
+    h += '<button class="btn" data-accion="editar-local">Editar</button>';
+    $('ficha-acciones').innerHTML = h;
+  }
 
   function renderFicha() {
     var l = D.locales.filter(function (x) { return x.id_local === localSel; })[0]; if (!l) return;
@@ -411,6 +488,7 @@
     $('ficha-tabs').querySelectorAll('button').forEach(function (b) { b.classList.toggle('activa', b.dataset.tab === tabFicha); });
     var f = { resumen: tabResumen, contrato: tabContrato, pagos: tabPagos, mantenimiento: tabMantenimiento, historial: tabHistorial }[tabFicha];
     $('ficha-cuerpo').innerHTML = f(l, r);
+    renderAccionesFicha(l, r);
     enlazarAcciones(l, r);
   }
   function dato(k, v, ancho) { return '<div class="dato' + (ancho ? ' ancho' : '') + '"><div class="k">' + k + '</div><div class="v">' + (v === '' || v === undefined || v === null ? '—' : v) + '</div></div>'; }
@@ -535,10 +613,12 @@
   function enlazarAcciones(l, r) {
     var cuerpo = $('ficha-cuerpo');
     cuerpo.querySelectorAll('[data-tab-ir]').forEach(function (b) { b.onclick = function () { tabFicha = b.dataset.tabIr; renderFicha(); }; });
-    cuerpo.querySelectorAll('[data-accion]').forEach(function (b) {
+    var botones = Array.prototype.slice.call(cuerpo.querySelectorAll('[data-accion]')).concat(Array.prototype.slice.call($('ficha-acciones').querySelectorAll('[data-accion]')));
+    botones.forEach(function (b) {
       b.onclick = function (ev) {
         ev.stopPropagation();
         var a = b.dataset.accion;
+        if (a === 'ver-plano') { if (esMovil()) { $('ficha').hidden = true; $('ficha-fondo').hidden = true; setVista('mapa'); } enfocarLocal(l); return; }
         if (a === 'editar-local') formLocal(l, r);
         if (a === 'nuevo-contrato') formContrato(l, null);
         if (a === 'editar-contrato') formContrato(l, D.contratos.filter(function (c) { return c.id_contrato === b.dataset.id; })[0]);
@@ -564,8 +644,8 @@
       var fd = {}; Array.prototype.forEach.call(form.elements, function (el) { if (el.name) fd[el.name] = el.type === 'checkbox' ? el.checked : el.value; });
       try {
         var resp = await onSubmit(fd);
-        if (resp && resp.datos) D = resp.datos;
-        cerrarModal(); renderTodo();
+        if (resp && resp.datos) setDatos(resp.datos);
+        cerrarModal(); renderTodo(); marcarSync();
         toast(resp && resp.mensaje ? resp.mensaje : 'Guardado.');
       } catch (e) {
         $('modal-error').textContent = e.message; $('modal-error').parentNode.hidden = false;
@@ -690,7 +770,11 @@
       '<h3>El mapa</h3><p>Cada local aparece dibujado sobre el plano. El color dice cómo está: <strong>gris</strong> libre, <strong>teal</strong> alquilado y al día, <strong>naranja</strong> alquilado con deuda, <strong>azul rayado</strong> en refacción, <strong>violeta rayado</strong> en gestión judicial, <strong>gris claro</strong> de uso interno (no se alquila). El ícono 🔧 marca que tiene un trabajo de mantenimiento sin resolver, sea cual sea su color. Una zona punteada es una habitación del plano que todavía no tiene unidad asignada.</p>' +
       '<p>No todo está en el plano: las <strong>góndolas</strong> del hall, las <strong>oficinas de planta alta</strong> y el <strong>predio norte</strong> aparecen solo en la lista de la izquierda (filtrá por categoría). Una unidad puede ocupar varias zonas del plano (por ejemplo 41A y 41B).</p>' +
       '<p>Arriba del plano están los <strong>sectores</strong> (Block 1 a 8): al elegir uno el mapa hace zoom ahí y la lista de la izquierda muestra solo esos locales. También podés acercar con la rueda del mouse (o dos dedos en el celular), arrastrar para moverte y volver a la vista del sector con ⌂.</p>' +
-      '<h3>La ficha</h3><p>Hacé click en un local (en el plano o en la lista de la izquierda) y se abre su ficha con cinco pestañas: Resumen, Contrato, Pagos, Mantenimiento e Historial. Desde ahí se edita todo.</p>' +
+      '<h3>La ficha</h3><p>Hacé click en un local (en el plano o en la lista) y se abre su ficha. Arriba tenés los <strong>botones de lo más frecuente</strong>: Registrar pago, Reportar falla, Completar contrato, Ver en el plano y Editar. Debajo, cinco pestañas: Resumen, Contrato, Pagos, Mantenimiento e Historial.</p>' +
+      '<h3>En el celular</h3><p>La barra de abajo cambia entre <strong>Mapa</strong>, <strong>Lista</strong> y <strong>Alertas</strong>; en <strong>Más</strong> están las cuotas del mes, la actualización y la ayuda. Los números de arriba (ocupación, deuda, etc.) se pueden tocar: llevan a la lista ya filtrada.</p>' +
+      '<h3>Los datos viven en una planilla de Google</h3><p>La base de datos es la planilla <strong>"Locales Terminal - Datos"</strong> (botón 📗 arriba, o en Más). Todo lo que cargás en la app se escribe ahí, y todo lo que edites directo en la planilla aparece en la app al abrirla o al tocar ↻. No hace falta subir archivos.</p>' +
+      '<p>Si editás la planilla a mano: usá los desplegables de cada columna, no cambies los encabezados ni el <code>id_local</code>, y escribí las fechas como fecha normal (15/03/2025) o como AAAA-MM-DD. Si algo queda mal, la app lo avisa con un cartel naranja al arrancar.</p>' +
+      '<p>La app guarda además una copia local para abrir al instante; ↻ fuerza una relectura y muestra la hora de la última actualización.</p>' +
       '<h3>Qué se carga a mano y qué no</h3><ul><li>El estado <strong>ALQUILADO</strong> lo pone la app sola cuando cargás un contrato, y lo saca cuando lo finalizás. No se puede forzar.</li><li>La <strong>deuda</strong> se calcula con las cuotas vencidas sin pagar. Para que un local figure al día, registrá el pago.</li><li>Lo único que marcás vos es <strong>LIBRE</strong> o <strong>EN REFACCIÓN</strong> (botón Editar en Resumen).</li></ul>' +
       '<h3>Todos los meses</h3><p>Apretá <strong>+ Cuotas del mes</strong>. Crea la cuota de alquiler (y la de expensas si el contrato las tiene) de cada contrato vigente, con vencimiento el 10. Si ya estaban, no las duplica. Ojo: genera para <em>todos</em> los contratos vigentes, incluidos los que están en gestión judicial. Si alguna cuota no corresponde, en la pestaña Pagos del local tenés <strong>Anular</strong> (solo mientras no tenga pagos).</p>' +
       '<h3>Registrar un pago</h3><p>Ficha → Pagos → <strong>+ Registrar pago</strong>, o click directo en la fila de la cuota. El monto viene precargado con el saldo; bajalo si es un pago parcial.</p>' +
@@ -709,21 +793,91 @@
     b.hidden = false;
   }
 
-  // ---------- arranque ----------
-  async function iniciar() {
-    $('app').hidden = false; $('pantalla-pin').hidden = true;
-    $('banner-demo').hidden = !API.modoDemo;
+  // ---------- vistas (celular: una por vez) ----------
+  function setVista(v) {
+    if (v === 'alertas') { renderAlertas(); $('ficha').hidden = true; $('panel-alertas').hidden = false; $('ficha-fondo').hidden = false; return; }
+    if (v === 'mas') { mostrarMas(); return; }
+    vistaMovil = v;
+    $('layout').setAttribute('data-vista', v);
+    $('nav-movil').querySelectorAll('button').forEach(function (b) { b.classList.toggle('activa', b.dataset.vista === v); });
+    $('panel-alertas').hidden = true; if ($('ficha').hidden) $('ficha-fondo').hidden = true;
+    if (v === 'mapa' && vistaBase) { setViewBox(cajaSector(sectorActual)); }
+    window.scrollTo({ top: 0 });
+  }
+  function mostrarMas() {
+    abrirModal('Más opciones',
+      '<div class="menu-mas">' +
+      '<button type="button" class="btn" id="mas-cuotas"><span class="nav-ico">🧾</span>Generar cuotas del mes</button>' +
+      '<button type="button" class="btn" id="mas-actualizar"><span class="nav-ico">↻</span>Actualizar desde la planilla</button>' +
+      (planillaUrl ? '<a class="btn" id="mas-planilla" href="' + esc(planillaUrl) + '" target="_blank" rel="noopener"><span class="nav-ico">📗</span>Abrir la planilla de Google</a>' : '') +
+      '<button type="button" class="btn" id="mas-ayuda"><span class="nav-ico">?</span>Cómo se usa</button>' +
+      '<button type="button" class="btn" id="mas-salir"><span class="nav-ico">⏏</span>Cerrar sesión</button>' +
+      '</div>', function () { return Promise.resolve({ mensaje: '' }); }, 'Cerrar');
+    $('modal-form').querySelector('button[type=submit]').hidden = true; $('modal-cancelar').textContent = 'Cerrar';
+    $('mas-cuotas').onclick = function () { cerrarModal(); formCuotas(); };
+    $('mas-actualizar').onclick = function () { cerrarModal(); actualizarDatos(true); };
+    $('mas-ayuda').onclick = function () { cerrarModal(); mostrarAyuda(); };
+    $('mas-salir').onclick = function () { cerrarModal(); API.salir(); mostrarPin(''); };
+  }
+
+  // ---------- carga y sincronización ----------
+  var ultimaSync = null;
+  function marcarSync(fecha) {
+    ultimaSync = fecha || new Date();
+    var el = $('sync-estado'); if (!el) return;
+    el.textContent = API.modoDemo ? '' : 'Actualizado ' + ultimaSync.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+    $('btn-actualizar').title = 'Última lectura de la planilla: ' + ultimaSync.toLocaleString('es-AR') + '. Tocá para volver a leer.';
+  }
+  function mostrarCargando(texto) { $('cargando-texto').textContent = texto; $('cargando-datos').hidden = false; $('btn-actualizar').classList.add('girando'); }
+  function ocultarCargando() { $('cargando-datos').hidden = true; $('btn-actualizar').classList.remove('girando'); }
+
+  // Vuelve a leer todo desde el servidor. Con `manual` avisa aunque no haya cambios.
+  async function actualizarDatos(manual) {
+    mostrarCargando(manual ? 'Leyendo la planilla de Google…' : 'Actualizando…');
     try {
-      var resp = await API.cargarTodo();
-      D = resp.datos;
-      mostrarDiagnostico(resp.diagnostico);
+      var resp = await API.cargarTodo({ forzar: !!manual });   // ↻ manual saltea la caché del servidor (por si se editó la planilla a mano)
+      var cambio = JSON.stringify(resp.datos) !== JSON.stringify(D);
+      setDatos(resp.datos); mostrarDiagnostico(resp.diagnostico); recordarPlanilla(resp);
+      if (!$('mapa').querySelector('svg')) await cargarPlano(); else reindexarZonas();
+      renderTodo(); marcarSync();
+      if (manual) toast(cambio ? 'Datos actualizados desde la planilla.' : 'Ya estaba todo al día.');
     } catch (e) {
       if (/PIN/i.test(e.message)) { mostrarPin(e.message); return; }
-      $('mapa').innerHTML = '<div class="cargando">No se pudieron cargar los datos: ' + esc(e.message) + '</div>';
-      return;
-    }
-    await cargarPlano();
-    renderTodo();
+      toast('No se pudo actualizar: ' + e.message + (D ? ' Se muestran los últimos datos guardados.' : ''), true);
+    } finally { ocultarCargando(); }
+  }
+
+  // ---------- arranque ----------
+  async function iniciar() {
+    if (iniciando) return; iniciando = true;
+    try {
+      $('app').hidden = false; $('pantalla-pin').hidden = true;
+      $('banner-demo').hidden = !API.modoDemo;
+      renderKpisEsqueleto();
+      // 1) Si hay una copia local, se muestra al instante y se actualiza atrás
+      var cache = leerCache();
+      if (cache) {
+        D = cache.datos; invalidar();
+        await cargarPlano(); renderTodo(); marcarSync(new Date(cache.t));
+        await actualizarDatos(false);
+        return;
+      }
+      // 2) Primera vez: hay que esperar al servidor (mostrar que está pasando algo)
+      mostrarCargando(API.modoDemo ? 'Cargando datos…' : 'Leyendo la planilla de Google… (la primera vez tarda unos segundos)');
+      try {
+        var resp = await API.cargarTodo();
+        setDatos(resp.datos);
+        mostrarDiagnostico(resp.diagnostico); recordarPlanilla(resp);
+      } catch (e) {
+        ocultarCargando();
+        if (/PIN/i.test(e.message)) { mostrarPin(e.message); return; }
+        $('mapa').innerHTML = '<div class="cargando">No se pudieron cargar los datos: ' + esc(e.message) + '<br><br><button class="btn btn-primario" onclick="location.reload()">Reintentar</button></div>';
+        $('kpis').innerHTML = '';
+        return;
+      }
+      await cargarPlano();
+      renderTodo(); marcarSync(); ocultarCargando();
+    } finally { iniciando = false; }
   }
   function mostrarPin(msg) {
     $('app').hidden = true; $('pantalla-pin').hidden = false;
@@ -741,13 +895,22 @@
       catch (e) { $('pin-error').textContent = e.message; $('pin-error').hidden = false; $('input-pin').value = ''; $('input-pin').focus(); }
       btn.disabled = false;
     };
-    $('btn-salir').onclick = function () { API.salir(); mostrarPin(''); };
+    $('btn-salir').onclick = function () { API.salir(); try { localStorage.removeItem(CLAVE_CACHE); } catch (e) { } mostrarPin(''); };
     $('btn-ayuda').onclick = mostrarAyuda;
     $('btn-cuotas').onclick = formCuotas;
-    $('btn-alertas').onclick = function () { renderAlertas(); $('ficha').hidden = true; $('panel-alertas').hidden = false; $('ficha-fondo').hidden = false; };
+    $('btn-actualizar').onclick = function () { if (D) actualizarDatos(true); };
+    try { planillaUrl = localStorage.getItem('locales_planilla_url') || ''; } catch (e) { }
+    $('btn-planilla').onclick = function () { if (planillaUrl) window.open(planillaUrl, '_blank', 'noopener'); };
+    $('btn-planilla').hidden = !planillaUrl;
+    $('btn-alertas').onclick = function () { setVista('alertas'); };
     $('alertas-cerrar').onclick = function () { $('panel-alertas').hidden = true; $('ficha-fondo').hidden = true; };
+    $('alertas-volver').onclick = function () { $('panel-alertas').hidden = true; $('ficha-fondo').hidden = true; };
     $('ficha-cerrar').onclick = cerrarFicha;
+    $('ficha-volver').onclick = cerrarFicha;
     $('ficha-fondo').onclick = function () { cerrarFicha(); $('panel-alertas').hidden = true; };
+    $('nav-movil').querySelectorAll('button').forEach(function (b) { b.onclick = function () { setVista(b.dataset.vista); }; });
+    if (esMovil()) $('referencia').open = false;   // en el celular las referencias arrancan plegadas para dejar lugar al plano
+    window.addEventListener('popstate', function () { if (!$('ficha').hidden) cerrarFicha(); });
     $('modal-cerrar').onclick = cerrarModal;
     $('modal').addEventListener('click', function (e) { if (e.target === $('modal')) cerrarModal(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('modal').hidden) cerrarModal(); else if (!$('ficha').hidden) cerrarFicha(); else if (!$('panel-alertas').hidden) { $('panel-alertas').hidden = true; $('ficha-fondo').hidden = true; } } });

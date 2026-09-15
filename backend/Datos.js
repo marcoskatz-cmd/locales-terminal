@@ -3,9 +3,17 @@
 //  Columnas por encabezado. Fechas siempre como texto AAAA-MM-DD.
 // ============================================================
 
+// Normaliza lo que viene de la celda. Tolera que alguien edite la planilla a mano:
+// fechas como Date de Sheets o escritas "15/03/2025" -> "2025-03-15"; períodos "9/2026" o "sep-26" -> "2026-09".
 function normalizar_(v) {
   if (v instanceof Date) return Utilities.formatDate(v, Session.getScriptTimeZone(), 'yyyy-MM-dd');
   if (v === null || v === undefined) return '';
+  if (typeof v === 'string') {
+    var s = v.trim(), m;
+    if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2);
+    if ((m = s.match(/^(\d{1,2})\/(\d{4})$/))) return m[2] + '-' + ('0' + m[1]).slice(-2);
+    return s;
+  }
   return v;
 }
 

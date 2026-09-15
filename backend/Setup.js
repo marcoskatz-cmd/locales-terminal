@@ -80,6 +80,9 @@ function borrarDatosMock() {
   Logger.log('Datos ficticios borrados. LISTAS y PLANTAS quedaron intactas.');
 }
 
+// Si editaste la planilla a mano y querés que la app lo vea ya (sin esperar los 10 minutos ni tocar ↻)
+function limpiarCache() { borrarCache_(); Logger.log('Caché borrada. La próxima lectura va directo a la planilla.'); }
+
 // Cambiar el PIN sin entrar a la configuración del proyecto
 function cambiarPin(nuevo) {
   if (!nuevo || String(nuevo).length < 4) throw new Error('El PIN tiene que tener al menos 4 caracteres.');
