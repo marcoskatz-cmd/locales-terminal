@@ -184,6 +184,17 @@ function sesionIngecoOk_(sesion) {
     var j = JSON.parse(r.getContentText());
     ok = !!(j && j.ok);
   } catch (e) { ok = false; }
-  cache.put(k, ok ? '1' : '0', 600);
+  cache.put(k, ok ? '1' : '0', ok ? 600 : 60);
   return ok;
+}
+
+/**
+ * Correr UNA vez desde el editor (Ejecutar) para autorizar el permiso de conexiones externas
+ * (UrlFetchApp) que necesita el acceso desde la app INGECO. Imprime el resultado en el registro.
+ */
+function autorizarAppIngeco() {
+  var r = UrlFetchApp.fetch(APP_INGECO_BACKEND + '?accion=ping', { muteHttpExceptions: true });
+  Logger.log('App INGECO respondió: ' + r.getContentText().slice(0, 120));
+  CacheService.getScriptCache().removeAll([]);
+  return r.getContentText();
 }
