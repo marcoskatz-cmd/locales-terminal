@@ -14,7 +14,7 @@ function doPost(e) {
     var body = {};
     try { body = JSON.parse(e.postData && e.postData.contents || '{}'); } catch (err) { return responder_({ ok: false, error: 'Cuerpo inválido.' }); }
     var accion = String(body.accion || '');
-    var pinOk = validarPin_(body.pin);
+    var pinOk = validarPin_(body.pin) || sesionIngecoOk_(body.ingeco_sesion);
 
     if (accion === 'validarPin') return responder_(pinOk ? { ok: true } : { ok: false, codigo: 'PIN', error: 'PIN incorrecto.' });
     if (!pinOk) return responder_({ ok: false, codigo: 'PIN', error: 'PIN incorrecto.' });
@@ -163,4 +163,27 @@ function pruebaCargarTodo() {
   var d = cargarDatos_(ss);
   Logger.log('locales=%s contratos=%s cuotas=%s pagos=%s mant=%s', d.locales.length, d.contratos.length, d.cuotas.length, d.pagos.length, d.mantenimiento.length);
   Logger.log('diagnóstico: %s', JSON.stringify(diagnosticarEsquema_(ss).concat(diagnosticarDatos_(d))));
+}
+
+// ── Acceso desde la app INGECO: sesión de módulo (12 h) emitida por el backend común al canjear el ticket.
+//    Se verifica contra app-ingeco y se cachea 10 min para no pegarle en cada pedido.
+var APP_INGECO_BACKEND = 'https://script.google.com/macros/s/AKfycbx9NN1FfOQjUjfymLXrMyd2QM6l96HP0lxY6RC7_xKsbDlO0PnwdHbaMtag54VYFor0/exec';
+function sesionIngecoOk_(sesion) {
+  if (!sesion || String(sesion).length < 20) return false;
+  var cache = CacheService.getScriptCache();
+  var k = 'ingeco_ses_' + String(sesion).slice(0, 40);
+  var c = cache.get(k);
+  if (c === '1') return true;
+  if (c === '0') return false;
+  var ok = false;
+  try {
+    var r = UrlFetchApp.fetch(APP_INGECO_BACKEND, {
+      method: 'post', contentType: 'text/plain;charset=utf-8', muteHttpExceptions: true,
+      payload: JSON.stringify({ accion: 'validar_sesion_modulo', payload: { sesion: String(sesion), modulo: 'LOCALES_TERMINAL' } })
+    });
+    var j = JSON.parse(r.getContentText());
+    ok = !!(j && j.ok);
+  } catch (e) { ok = false; }
+  cache.put(k, ok ? '1' : '0', 600);
+  return ok;
 }

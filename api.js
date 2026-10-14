@@ -40,7 +40,7 @@ var API = (function () {
         method: 'POST',
         // text/plain evita el preflight CORS que Apps Script no responde
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ accion: accion, pin: pin, datos: cuerpo })
+        body: JSON.stringify({ accion: accion, pin: pin, ingeco_sesion: window.INGECO_SESION || '', datos: cuerpo })
       });
     } catch (e) {
       var eRed = new Error('No se pudo conectar con el servidor. Revisá la conexión e intentá de nuevo.'); eRed.reintentable = true; throw eRed;
@@ -105,7 +105,8 @@ var API = (function () {
 
   return {
     modoDemo: modoDemo,
-    tienePin: function () { return !!pin; },
+    // Desde la app INGECO (guard.js) no hace falta PIN: el backend valida la sesión de módulo.
+    tienePin: function () { return !!pin || !!window.INGECO_SESION; },
     validarPin: async function (p) {
       var j;
       if (modoDemo) { j = await postDemo('validarPin', { pin: p }); if (!j.ok) throw new Error(j.error); }
