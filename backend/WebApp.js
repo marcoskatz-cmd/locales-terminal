@@ -4,7 +4,7 @@
 //  Respuesta: { ok, ... } o { ok:false, error, codigo }
 // ============================================================
 
-function doGet() {
+function doGet(e) {
   return responder_({ ok: true, servicio: 'Locales Terminal INGECO', version_esquema: VERSION_ESQUEMA, hora: new Date().toISOString() });
 }
 
@@ -93,6 +93,13 @@ function doPost(e) {
     resultado.upserts.forEach(function (u) { upsertFila_(ss, u.hoja, u.fila); });
     agregarHistorial_(ss, resultado.historial);
     SpreadsheetApp.flush();
+    if (accion === 'registrarPago') {
+      try {
+        var pg = (resultado.upserts || []).filter(function (u) { return u.hoja === 'PAGOS'; })[0];
+        pg = pg ? pg.fila : (body.datos || {});
+        notificarAppIngeco_('LOCALES_TERMINAL', { destinatarios: [{ con_modulo: 'LOCALES_TERMINAL' }], tipo: 'aviso_general', prioridad: 'normal', titulo: 'Pago registrado: ' + (pg.id_local || '') + ' · $' + Number(pg.monto || 0).toLocaleString('es-AR'), cuerpo: String(resultado.mensaje || '') + (pg.medio ? ' · ' + pg.medio : ''), url_destino: 'https://marcoskatz-cmd.github.io/locales-terminal/', clave_unica: 'pago-' + (pg.id_pago || Date.now()) });
+      } catch (eAv) { }
+    }
     // El estado nuevo es el que teníamos en memoria más lo recién escrito: no hace falta releer toda la planilla
     REGLAS.aplicar(d, resultado);
     var b64Nuevo = comprimirDatos_(d);
